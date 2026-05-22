@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Admin | Balincah Trip Manado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./admin.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <div class="brand__text">
+            <div class="brand__name">Balincah Admin</div>
+            <div class="brand__tag">Content Manager (static)</div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <a class="pill" href="../landingpage/index.html" target="_blank" rel="noreferrer">Buka Landing</a>
+          <button class="pill pill--warn" id="resetBtn" type="button" title="Hapus data local admin">Reset</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" id="main">
+      <section class="notice">
+        <strong>Catatan:</strong> Admin ini tanpa backend. Data tersimpan di browser (localStorage) dan bisa diekspor menjadi JSON.
+        Jangan anggap aman untuk publik.
+      </section>
+
+      <section class="auth" id="auth">
+        <div class="card">
+          <h1>Masuk Admin</h1>
+          <p class="muted">
+            Buat PIN sekali, lalu gunakan untuk masuk berikutnya (PIN disimpan di browser ini). Ini hanya “gate” ringan.
+          </p>
+          <form id="authForm" class="grid">
+            <div class="field">
+              <label for="pin">PIN</label>
+              <input id="pin" name="pin" type="password" inputmode="numeric" minlength="4" placeholder="Minimal 4 digit" required />
+            </div>
+            <button class="btn btn--primary" type="submit" id="authSubmit">Masuk / Set PIN</button>
+          </form>
+          <div class="row">
+            <button class="btn btn--ghost" type="button" id="logoutBtn" disabled>Logout</button>
+            <button class="btn btn--ghost" type="button" id="changePinBtn">Ganti PIN</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="app is-hidden" id="app">
+        <div class="layout">
+          <aside class="sidebar">
+            <nav class="nav" aria-label="Menu admin">
+              <button class="nav__item is-active" type="button" data-tab="umum">Umum</button>
+              <button class="nav__item" type="button" data-tab="paket">Paket</button>
+              <button class="nav__item" type="button" data-tab="destinasi">Destinasi</button>
+              <button class="nav__item" type="button" data-tab="galeri">Galeri</button>
+              <button class="nav__item" type="button" data-tab="itinerary">Itinerary</button>
+              <button class="nav__item" type="button" data-tab="alasan">Alasan</button>
+              <button class="nav__item" type="button" data-tab="testimoni">Testimoni</button>
+              <button class="nav__item" type="button" data-tab="faq">FAQ</button>
+              <button class="nav__item" type="button" data-tab="export">Export/Import</button>
+            </nav>
+            <div class="sidebar__footer">
+              <button class="btn btn--primary btn--full" id="saveBtn" type="button">Simpan</button>
+              <div class="muted small" id="saveHint">Belum ada perubahan.</div>
+            </div>
+          </aside>
+
+          <section class="panel">
+            <div class="panel__head">
+              <div>
+                <h2 id="tabTitle">Umum</h2>
+                <p class="muted" id="tabDesc">Pengaturan identitas dan copy utama.</p>
+              </div>
+              <div class="panel__actions">
+                <button class="btn btn--ghost" type="button" id="copyJsonBtn">Salin JSON</button>
+                <button class="btn btn--ghost" type="button" id="previewMsgBtn">Preview Pesan WA</button>
+                <a class="btn btn--ghost" id="waTestLink" href="#" target="_blank" rel="noreferrer">Tes WhatsApp</a>
+              </div>
+            </div>
+
+            <!-- Umum -->
+            <div class="tab" id="tab-umum">
+              <div class="card">
+                <h3>Brand & Kontak</h3>
+                <div class="grid2">
+                  <div class="field">
+                    <label for="siteName">Nama website</label>
+                    <input id="siteName" placeholder="Balincah Trip Manado" />
+                  </div>
+                  <div class="field">
+                    <label for="tagline">Tagline</label>
+                    <input id="tagline" placeholder="Explore Bunaken, Feel the Ocean Experience" />
+                  </div>
+                  <div class="field">
+                    <label for="waNumber">WhatsApp (E.164 tanpa +)</label>
+                    <input id="waNumber" placeholder="6281245474575" inputmode="numeric" />
+                  </div>
+                  <div class="field">
+                    <label for="igHandle">Instagram handle</label>
+                    <input id="igHandle" placeholder="balincahtripmanado" />
+                  </div>
+                  <div class="field">
+                    <label for="location">Lokasi</label>
+                    <input id="location" placeholder="Pantai Liang, Bunaken, Sulawesi Utara" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>Hero</h3>
+                <div class="grid2">
+                  <div class="field">
+                    <label for="heroTitle">Judul hero</label>
+                    <input id="heroTitle" placeholder="Explore Bunaken with Balincah Trip" />
+                  </div>
+                  <div class="field">
+                    <label for="heroSubtitle">Subjudul hero</label>
+                    <textarea id="heroSubtitle" rows="3" placeholder="Open Trip, Private Trip, Snorkeling, Diving, dan Boat Charter Bunaken"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>Tentang Kami</h3>
+                <div class="field">
+                  <label for="aboutText">Teks</label>
+                  <textarea id="aboutText" rows="6"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paket -->
+            <div class="tab is-hidden" id="tab-paket">
+              <div class="card">
+                <div class="row row--between">
+                  <div>
+                    <h3>Daftar Paket</h3>
+                    <p class="muted">Tambah/edit paket dan fasilitasnya.</p>
+                  </div>
+                  <button class="btn btn--primary" id="addPackageBtn" type="button">Tambah Paket</button>
+                </div>
+                <div class="listBox" id="packagesList"></div>
+              </div>
+            </div>
+
+            <!-- Destinasi -->
+            <div class="tab is-hidden" id="tab-destinasi">
+              <div class="card">
+                <div class="row row--between">
+                  <div>
+                    <h3>Destinasi</h3>
+                    <p class="muted">Tambah/edit destinasi unggulan.</p>
+                  </div>
+                  <button class="btn btn--primary" id="addDestinationBtn" type="button">Tambah Destinasi</button>
+                </div>
+                <div class="listBox" id="destinationsList"></div>
+              </div>
+            </div>
+
+            <!-- Galeri -->
+            <div class="tab is-hidden" id="tab-galeri">
+              <div class="card">
+                <div class="row row--between">
+                  <div>
+                    <h3>Galeri</h3>
+                    <p class="muted">Item galeri (judul + deskripsi). Untuk file foto/video, integrasi nanti.</p>
+                  </div>
+                  <button class="btn btn--primary" id="addGalleryBtn" type="button">Tambah Item</button>
+                </div>
+                <div class="listBox" id="galleryList"></div>
+              </div>
+            </div>
+
+            <!-- Itinerary -->
+            <div class="tab is-hidden" id="tab-itinerary">
+              <div class="card">
+                <div class="row row--between">
+                  <div>
+                    <h3>Itinerary</h3>
+                    <p class="muted">Contoh itinerary (jam + aktivitas).</p>
+                  </div>
+                  <button class="btn btn--primary" id="addItineraryBtn" type="button">Tambah Baris</button>
+                </div>
+                <div class="listBox" id="itineraryList"></div>
+              </div>
+            </div>
+
+            <!-- Alasan -->
+            <div class="tab is-hidden" id="tab-alasan">
+              <div class="card">
+                <div class="row row--between">
+                  <div>
+                    <h3>Kenapa Pilih Balincah Trip?</h3>
+                    <p class="muted">Daftar poin alasan.</p>
+                  </div>
+                  <button class="btn btn--primary" id="addReasonBtn" type="button">Tambah Poin</button>
+                </div>
+                <div class="listBox" id="reasonsList"></div>
+              </div>
+            </div>
+
+            <!-- Testimoni -->
+            <div class="tab is-hidden" id="tab-testimoni">
+              <div class="card">
+                <div class="row row--between">
+                  <div>
+                    <h3>Testimoni</h3>
+                    <p class="muted">Quote + sumber singkat.</p>
+                  </div>
+                  <button class="btn btn--primary" id="addTestimonialBtn" type="button">Tambah Testimoni</button>
+                </div>
+                <div class="listBox" id="testimonialsList"></div>
+              </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="tab is-hidden" id="tab-faq">
+              <div class="card">
+                <div class="row row--between">
+                  <div>
+                    <h3>FAQ</h3>
+                    <p class="muted">Pertanyaan & jawaban.</p>
+                  </div>
+                  <button class="btn btn--primary" id="addFaqBtn" type="button">Tambah FAQ</button>
+                </div>
+                <div class="listBox" id="faqList"></div>
+              </div>
+            </div>
+
+            <!-- Export/Import -->
+            <div class="tab is-hidden" id="tab-export">
+              <div class="card">
+                <h3>Export / Import</h3>
+                <p class="muted">
+                  Export untuk simpan ke file JSON. Import untuk memuat JSON yang sudah kamu edit/backup.
+                </p>
+                <div class="row">
+                  <button class="btn btn--primary" id="downloadBtn" type="button">Download JSON</button>
+                  <label class="btn btn--ghost" for="importFile">Import JSON</label>
+                  <input id="importFile" type="file" accept="application/json" hidden />
+                </div>
+                <div class="card card--sub">
+                  <h4>Raw JSON</h4>
+                  <textarea id="rawJson" rows="16" spellcheck="false"></textarea>
+                  <div class="row">
+                    <button class="btn btn--ghost" id="applyRawBtn" type="button">Terapkan JSON</button>
+                    <div class="muted small">Gunakan ini kalau kamu mau paste JSON manual.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="modal" id="waModal" aria-label="Preview pesan WhatsApp">
+      <div class="modal__inner">
+        <div class="modal__head">
+          <h3>Preview Pesan WhatsApp</h3>
+          <button class="btn btn--ghost" id="waModalClose" type="button">Tutup</button>
+        </div>
+        <textarea id="waPreview" rows="14" spellcheck="false"></textarea>
+        <div class="row">
+          <button class="btn btn--primary" id="copyWaBtn" type="button">Salin Pesan</button>
+          <a class="btn btn--ghost" id="openWaBtn" href="#" target="_blank" rel="noreferrer">Buka WhatsApp</a>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="./admin.js"></script>
+  </body>
+</html>
