@@ -893,7 +893,7 @@ function init() {
   // If localStorage is empty, try to fetch real content.json from the public directory
   const hasLocal = localStorage.getItem(STORAGE_KEY);
   if (!hasLocal) {
-    fetch("../public/content/content.json")
+    fetch("../content/content.json")
       .then((res) => {
         if (!res.ok) throw new Error("Status " + res.status);
         return res.json();
@@ -907,7 +907,7 @@ function init() {
         }
       })
       .catch((err) => {
-        console.warn("Could not auto-fetch ../public/content/content.json (expected if running via file:// protocol):", err);
+        console.warn("Could not auto-fetch ../content/content.json (expected if running via file:// protocol):", err);
       });
   }
   
@@ -1048,9 +1048,9 @@ function renderPackageDetailView(state) {
   const bannerImg = $("detailPackageBanner");
   if (bannerImg) {
     const banners = [
-      "../public/gotur/hero-1-1-image.jpg",
-      "../public/gotur/hero-1-2-image.jpg",
-      "../public/gotur/hero-1-3-image.jpg",
+      "../gotur/hero-1-1-image.jpg",
+      "../gotur/hero-1-2-image.jpg",
+      "../gotur/hero-1-3-image.jpg",
     ];
     bannerImg.src = banners[state.activePackageIdx % banners.length];
   }
@@ -1074,13 +1074,13 @@ function renderPackageDetailView(state) {
     galGrid.innerHTML = "";
     const items = state.content.gallery || [];
     const images = [
-      "../public/gotur/about-2-1.jpg",
-      "../public/gotur/about-s-2-1.jpg",
-      "../public/gotur/destination-slider-1-2-268x391.jpg",
-      "../public/gotur/destination-slider-1-3-268x391.jpg",
-      "../public/gotur/hero-1-1-image.jpg",
-      "../public/gotur/hero-1-2-image.jpg",
-      "../public/gotur/hero-1-3-image.jpg",
+      "../gotur/about-2-1.jpg",
+      "../gotur/about-s-2-1.jpg",
+      "../gotur/destination-slider-1-2-268x391.jpg",
+      "../gotur/destination-slider-1-3-268x391.jpg",
+      "../gotur/hero-1-1-image.jpg",
+      "../gotur/hero-1-2-image.jpg",
+      "../gotur/hero-1-3-image.jpg",
     ];
     items.slice(0, 4).forEach((g, i) => {
       const item = document.createElement("div");
