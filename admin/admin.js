@@ -11,6 +11,28 @@ function sha256Hex(str) {
   });
 }
 
+function weakHash(str) {
+  // Fallback for non-secure contexts where WebCrypto is unavailable.
+  // This is NOT cryptographically secure; only used as a lightweight gate.
+  let h = 5381;
+  const s = String(str ?? "");
+  for (let i = 0; i < s.length; i += 1) {
+    h = (h * 33) ^ s.charCodeAt(i);
+  }
+  return `weak:${(h >>> 0).toString(16)}`;
+}
+
+async function pinHash(pin) {
+  if (globalThis.crypto?.subtle) {
+    try {
+      return await sha256Hex(pin);
+    } catch {
+      // continue to fallback
+    }
+  }
+  return weakHash(pin);
+}
+
 function $(id) {
   return document.getElementById(id);
 }
@@ -610,7 +632,7 @@ function hookNav(state) {
 
 async function ensurePin(pin) {
   const stored = localStorage.getItem(PIN_HASH_KEY);
-  const hash = await sha256Hex(pin);
+  const hash = await pinHash(pin);
   if (!stored) {
     localStorage.setItem(PIN_HASH_KEY, hash);
     return true;
@@ -661,7 +683,7 @@ function hookAuth(state) {
   changePinBtn?.addEventListener("click", async () => {
     const newPin = prompt("Masukkan PIN baru (min 4 digit):");
     if (!newPin || newPin.length < 4) return;
-    const hash = await sha256Hex(newPin);
+    const hash = await pinHash(newPin);
     localStorage.setItem(PIN_HASH_KEY, hash);
     alert("PIN diganti.");
   });
@@ -747,6 +769,18 @@ function init() {
     activeTab: "umum",
   };
 
+  const authHelp = $("authHelp");
+  if (authHelp) {
+    if (!globalThis.isSecureContext && !globalThis.crypto?.subtle) {
+      authHelp.textContent =
+        "WebCrypto tidak tersedia di origin ini. PIN tetap bisa dipakai, tapi hanya gate ringan. Disarankan buka via http://localhost/ untuk hasil terbaik.";
+      authHelp.classList.remove("is-hidden");
+    } else if (!globalThis.isSecureContext) {
+      authHelp.textContent = "Origin ini bukan secure context. Jika ada kendala, buka admin via http://localhost/ atau HTTPS.";
+      authHelp.classList.remove("is-hidden");
+    }
+  }
+
   hookAuth(state);
   showAuthedUI(isSessionAuthed());
 
@@ -759,4 +793,3 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
-
