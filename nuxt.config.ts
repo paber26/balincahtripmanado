@@ -20,6 +20,10 @@ export default defineNuxtConfig({
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap",
         },
+        { rel: "icon", href: "/favicon.ico" },
+        { rel: "icon", type: "image/png", sizes: "32x32", href: "/icons/favicon-32x32.png" },
+        { rel: "icon", type: "image/png", sizes: "16x16", href: "/icons/favicon-16x16.png" },
+        { rel: "apple-touch-icon", sizes: "180x180", href: "/icons/apple-touch-icon-180.png" }
       ],
     },
   },
@@ -29,4 +33,3 @@ export default defineNuxtConfig({
     }
   }
 });
-
