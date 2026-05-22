@@ -125,9 +125,9 @@ useHead(() => ({
         </a>
 
         <nav class="ml-auto hidden items-center gap-1 rounded-full border border-navy/10 bg-white/60 px-2 py-2 md:flex">
-          <a class="rounded-full px-3 py-2 text-[13px] font-semibold text-black/75 hover:bg-ocean/10" href="#paket">Tours</a>
+          <NuxtLink class="rounded-full px-3 py-2 text-[13px] font-semibold text-black/75 hover:bg-ocean/10" to="/tours">Tours</NuxtLink>
           <a class="rounded-full px-3 py-2 text-[13px] font-semibold text-black/75 hover:bg-ocean/10" href="#destinasi">Destinations</a>
-          <a class="rounded-full px-3 py-2 text-[13px] font-semibold text-black/75 hover:bg-ocean/10" href="#galeri">Gallery</a>
+          <NuxtLink class="rounded-full px-3 py-2 text-[13px] font-semibold text-black/75 hover:bg-ocean/10" to="/media">Media</NuxtLink>
           <a class="rounded-full px-3 py-2 text-[13px] font-semibold text-black/75 hover:bg-ocean/10" href="#faq">FAQ</a>
         </nav>
 
