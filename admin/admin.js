@@ -197,6 +197,7 @@ function setTab(state, tabKey) {
   items.forEach((b) => b.classList.toggle("is-active", b.getAttribute("data-tab") === tabKey));
 
   const titles = {
+    dashboard: ["Dashboard", "Ringkasan konten dan quick actions."],
     umum: ["Umum", "Pengaturan identitas dan copy utama."],
     paket: ["Paket", "Kelola paket wisata dan fasilitas."],
     destinasi: ["Destinasi", "Kelola destinasi unggulan."],
@@ -215,6 +216,54 @@ function setTab(state, tabKey) {
 
   const rawJson = $("rawJson");
   if (tabKey === "export" && rawJson) rawJson.value = JSON.stringify(state.content, null, 2);
+  if (tabKey === "dashboard") renderDashboard(state);
+}
+
+function renderDashboard(state) {
+  const kpis = $("kpis");
+  const statusList = $("statusList");
+  if (!kpis || !statusList) return;
+
+  const waOk = /^\d{9,15}$/.test(String(state.content.whatsappE164 || ""));
+  const igOk = /^[a-zA-Z0-9._]{2,}$/.test(String(state.content.instagramHandle || ""));
+
+  const items = [
+    { k: "Paket", v: state.content.packages?.length ?? 0, hint: "Total paket aktif" },
+    { k: "Destinasi", v: state.content.destinations?.length ?? 0, hint: "Destinasi unggulan" },
+    { k: "Galeri", v: state.content.gallery?.length ?? 0, hint: "Item galeri" },
+    { k: "FAQ", v: state.content.faqs?.length ?? 0, hint: "Pertanyaan & jawaban" },
+  ];
+
+  kpis.innerHTML = "";
+  items.forEach(({ k, v, hint }) => {
+    const el = document.createElement("div");
+    el.className = "kpi";
+    el.innerHTML = `<div class="kpi__k">${escapeHtml(k)}</div><div class="kpi__v">${escapeHtml(String(v))}</div><div class="kpi__hint">${escapeHtml(hint)}</div>`;
+    kpis.appendChild(el);
+  });
+
+  statusList.innerHTML = "";
+  const statuses = [
+    { k: "WhatsApp", v: waOk ? `OK (${state.content.whatsappE164})` : "Periksa format E.164 (contoh: 62812...)" },
+    { k: "Instagram", v: igOk ? `OK (@${state.content.instagramHandle})` : "Periksa handle (tanpa @)" },
+    { k: "Tagline", v: state.content.tagline ? "OK" : "Kosong" },
+    { k: "Tentang Kami", v: (state.content.aboutText || "").trim().length > 30 ? "OK" : "Terlalu pendek/kosong" },
+  ];
+  statuses.forEach(({ k, v }) => {
+    const el = document.createElement("div");
+    el.className = "statusItem";
+    el.innerHTML = `<div class="statusItem__k">${escapeHtml(k)}</div><div class="statusItem__v">${escapeHtml(v)}</div>`;
+    statusList.appendChild(el);
+  });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function bindTextInput(state, id, key) {
@@ -721,7 +770,18 @@ function hookActions(state) {
   });
 
   $("downloadBtn")?.addEventListener("click", () => {
-    downloadJson("balincah-content.json", state.content);
+    downloadJson("content.json", state.content);
+  });
+  $("downloadBtn2")?.addEventListener("click", () => {
+    downloadJson("content.json", state.content);
+  });
+  $("openExportTabBtn")?.addEventListener("click", () => setTab(state, "export"));
+  $("openPackagesTabBtn")?.addEventListener("click", () => setTab(state, "paket"));
+
+  $("previewLandingBtn")?.addEventListener("click", () => {
+    // Preview mode uses localStorage data on landing (implemented on landing side).
+    const url = "../landingpage/index.html?preview=1";
+    window.open(url, "_blank", "noopener,noreferrer");
   });
 
   $("importFile")?.addEventListener("change", async (e) => {
@@ -759,6 +819,7 @@ function hookActions(state) {
     state.content = defaultContent();
     applyContentToForm(state);
     markDirty(state);
+    renderDashboard(state);
   });
 }
 
@@ -766,7 +827,7 @@ function init() {
   const state = {
     content: loadContent(),
     isDirty: false,
-    activeTab: "umum",
+    activeTab: "dashboard",
   };
 
   const authHelp = $("authHelp");
@@ -788,7 +849,8 @@ function init() {
   hookAddButtons(state);
   hookNav(state);
   hookActions(state);
-  setTab(state, "umum");
+  renderDashboard(state);
+  setTab(state, "dashboard");
   markClean(state);
 }
 

@@ -8,8 +8,8 @@ Folder `admin/` berisi admin sederhana tanpa backend untuk mengelola konten land
 - Set PIN (minimal 4 digit) untuk gate ringan (tersimpan di browser ini).
 - Ubah konten, klik **Simpan** (tersimpan di localStorage).
 - Export lewat tab **Export/Import** → **Download JSON** atau **Salin JSON**.
+- Preview landing draft: klik **Preview Landing** (membuka `landingpage/index.html?preview=1`).
 
 ## Catatan keamanan
 
 Admin ini **bukan** sistem login aman. PIN hanya untuk mencegah akses tidak sengaja pada device/browser yang sama.
-

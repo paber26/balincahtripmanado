@@ -1,5 +1,7 @@
-const WHATSAPP_NUMBER_E164 = "6281245474575";
-const INSTAGRAM_HANDLE = "balincahtripmanado";
+const DEFAULT_WHATSAPP_NUMBER_E164 = "6281245474575";
+const DEFAULT_INSTAGRAM_HANDLE = "balincahtripmanado";
+const ADMIN_STORAGE_KEY = "balincah_admin_content_v1";
+const CONTENT_URL = "../content/content.json";
 
 function encodeWhatsAppMessage(message) {
   return encodeURIComponent(message.trim());
@@ -23,7 +25,206 @@ function buildWhatsAppMessage({ nama, tanggal, jumlah, paket, catatan, nomorWa }
 }
 
 function waLinkWithMessage(message) {
-  return `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeWhatsAppMessage(message)}`;
+  return `https://wa.me/${DEFAULT_WHATSAPP_NUMBER_E164}?text=${encodeWhatsAppMessage(message)}`;
+}
+
+function waLinkWithMessageFor(numberE164, message) {
+  const num = String(numberE164 || DEFAULT_WHATSAPP_NUMBER_E164).replace(/[^\d]/g, "");
+  return `https://wa.me/${num}?text=${encodeWhatsAppMessage(message)}`;
+}
+
+function getQueryParam(name) {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+
+async function loadContent() {
+  const preview = getQueryParam("preview") === "1";
+  if (preview) {
+    try {
+      const raw = localStorage.getItem(ADMIN_STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch {
+      // ignore
+    }
+  }
+
+  try {
+    const res = await fetch(CONTENT_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error("content fetch failed");
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+function setTextIf(id, text) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+}
+
+function setHtmlIf(id, html) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function renderLandingContent(content) {
+  if (!content) return;
+
+  // Brand
+  const siteName = String(content.siteName || "Balincah Trip Manado");
+  const [brandName, brandTag] = siteName.includes(" ") ? ["Balincah Trip", siteName.replace("Balincah Trip", "").trim() || "Manado"] : ["Balincah Trip", "Manado"];
+  setTextIf("brandName", brandName);
+  setTextIf("brandTag", brandTag || "Manado");
+  setTextIf("footerBrandName", brandName);
+  setTextIf("footerBrandTag", brandTag || "Manado");
+
+  // Hero
+  if (content.tagline) setTextIf("heroTagline", content.tagline);
+  if (content.heroTitle) setTextIf("heroTitle", content.heroTitle);
+  if (content.heroSubtitle) setTextIf("heroSubtitle", content.heroSubtitle);
+
+  // About
+  if (content.aboutText) setTextIf("aboutText", content.aboutText);
+
+  // Reasons (section)
+  if (Array.isArray(content.reasons)) {
+    const reasons = content.reasons
+      .slice(0, 12)
+      .map((r) => `<div class="reason">${escapeHtml(r)}</div>`)
+      .join("");
+    setHtmlIf("reasons", reasons);
+  }
+
+  // Packages
+  if (Array.isArray(content.packages)) {
+    const cards = content.packages
+      .map((p) => {
+        const name = escapeHtml(p.name || "Paket");
+        const desc = escapeHtml(p.desc || "");
+        const facilities = Array.isArray(p.facilities) ? p.facilities.map((f) => `<li>${escapeHtml(f)}</li>`).join("") : "";
+        return `
+          <article class="pkg">
+            <div class="pkg__top">
+              <h3>${name}</h3>
+              <p class="muted">${desc}</p>
+            </div>
+            <ul class="list list--compact">${facilities}</ul>
+            <div class="pkg__actions">
+              <button class="btn btn--primary js-book" type="button" data-paket="${name}">Booking</button>
+              <button class="btn btn--ghost js-scroll" type="button" data-target="#booking">Isi Form</button>
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+    setHtmlIf("packages", cards);
+
+    // Booking select options
+    const select = document.getElementById("paketSelect");
+    if (select) {
+      select.innerHTML = content.packages.map((p) => `<option>${escapeHtml(p.name || "Paket")}</option>`).join("");
+    }
+  }
+
+  // Destinations
+  if (Array.isArray(content.destinations)) {
+    const items = content.destinations
+      .map((d, idx) => {
+        const name = escapeHtml(d.name || "Destinasi");
+        const desc = escapeHtml(d.desc || "");
+        const klass = idx === 0 ? "dest__ph--bunaken" : idx === 1 ? "dest__ph--nain" : idx === 2 ? "dest__ph--siladen" : "dest__ph--uw";
+        return `
+          <div class="dest__item">
+            <div class="dest__ph ${klass}" aria-hidden="true"></div>
+            <h3>${name}</h3>
+            <p class="muted">${desc}</p>
+          </div>
+        `;
+      })
+      .join("");
+    setHtmlIf("destinations", items);
+  }
+
+  // Gallery (9 items max to match layout classes g--1..g--9)
+  if (Array.isArray(content.gallery)) {
+    const classes = ["g--1", "g--2", "g--3", "g--4", "g--5", "g--6", "g--7", "g--8", "g--9"];
+    const buttons = content.gallery.slice(0, 9).map((g, i) => {
+      const title = escapeHtml(g.title || `Galeri ${i + 1}`);
+      const desc = escapeHtml(g.desc || "");
+      return `<button class="g ${classes[i] || ""}" type="button" data-title="${title}" data-desc="${desc}" aria-label="Buka detail galeri ${i + 1}"></button>`;
+    });
+    setHtmlIf("gallery", buttons.join(""));
+  }
+
+  // Itinerary
+  if (Array.isArray(content.itinerary)) {
+    const rows = content.itinerary
+      .map((it) => `<div class="t"><span class="t__time">${escapeHtml(it.time || "--.--")}</span><span class="t__text">${escapeHtml(it.text || "")}</span></div>`)
+      .join("");
+    setHtmlIf("timeline", rows);
+  }
+
+  // Testimonials
+  if (Array.isArray(content.testimonials)) {
+    const quotes = content.testimonials
+      .slice(0, 8)
+      .map((t) => {
+        const q = escapeHtml(t.quote || "");
+        const by = escapeHtml(t.by || "");
+        return `<figure class="quote"><blockquote>“${q}”</blockquote><figcaption>— ${by}</figcaption></figure>`;
+      })
+      .join("");
+    setHtmlIf("testimonials", quotes);
+  }
+
+  // FAQ
+  if (Array.isArray(content.faqs)) {
+    const faqs = content.faqs
+      .slice(0, 12)
+      .map((f) => {
+        const q = escapeHtml(f.q || "");
+        const a = escapeHtml(f.a || "");
+        return `<details><summary>${q}</summary><p>${a}</p></details>`;
+      })
+      .join("");
+    setHtmlIf("faqList", faqs);
+  }
+
+  // Contact
+  if (content.location) setTextIf("locationText", content.location);
+
+  const msg = buildWhatsAppMessage({
+    nama: "",
+    tanggal: "",
+    jumlah: "",
+    paket: "",
+    catatan: "",
+    nomorWa: "",
+  });
+  const wa = waLinkWithMessageFor(content.whatsappE164, msg);
+  ["waHeaderBtn", "waHeroBtn", "waAboutBtn", "waFooterBtn", "waFloat", "waTextLink"].forEach((id) => setHref(id, wa));
+
+  const igHandle = String(content.instagramHandle || DEFAULT_INSTAGRAM_HANDLE).replace(/^@/, "");
+  const igUrl = `https://www.instagram.com/${igHandle}/`;
+  ["igBtn", "igFooterBtn", "igTextLink"].forEach((id) => setHref(id, igUrl));
+  const waText = document.getElementById("waTextLink");
+  if (waText) waText.textContent = String(content.whatsappE164 || DEFAULT_WHATSAPP_NUMBER_E164);
+  const igText = document.getElementById("igTextLink");
+  if (igText) igText.textContent = `@${igHandle}`;
+
+  if (content.tagline) setTextIf("footerTagline", `${content.tagline} — Open trip, private trip, snorkeling, diving, dan boat charter.`);
 }
 
 function setHref(id, href) {
@@ -70,7 +271,7 @@ function init() {
     setHref(id, defaultWa),
   );
 
-  const igUrl = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
+  const igUrl = `https://www.instagram.com/${DEFAULT_INSTAGRAM_HANDLE}/`;
   ["igBtn", "igFooterBtn", "igTextLink"].forEach((id) => setHref(id, igUrl));
 
   // Mobile nav
@@ -177,5 +378,8 @@ function init() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", init);
-
+document.addEventListener("DOMContentLoaded", async () => {
+  init();
+  const content = await loadContent();
+  renderLandingContent(content);
+});

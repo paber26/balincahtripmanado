@@ -60,8 +60,21 @@
       <section class="app is-hidden" id="app">
         <div class="layout">
           <aside class="sidebar">
+            <div class="sidebar__head">
+              <div class="sidebarUser">
+                <div class="sidebarUser__avatar" aria-hidden="true"></div>
+                <div class="sidebarUser__meta">
+                  <div class="sidebarUser__name">Admin</div>
+                  <div class="sidebarUser__role">Dashboard</div>
+                </div>
+              </div>
+              <div class="sidebarQuick">
+                <button class="btn btn--ghost btn--full" id="previewLandingBtn" type="button">Preview Landing</button>
+              </div>
+            </div>
             <nav class="nav" aria-label="Menu admin">
-              <button class="nav__item is-active" type="button" data-tab="umum">Umum</button>
+              <button class="nav__item is-active" type="button" data-tab="dashboard">Dashboard</button>
+              <button class="nav__item" type="button" data-tab="umum">Umum</button>
               <button class="nav__item" type="button" data-tab="paket">Paket</button>
               <button class="nav__item" type="button" data-tab="destinasi">Destinasi</button>
               <button class="nav__item" type="button" data-tab="galeri">Galeri</button>
@@ -90,8 +103,30 @@
               </div>
             </div>
 
+            <!-- Dashboard -->
+            <div class="tab" id="tab-dashboard">
+              <div class="kpis" id="kpis"></div>
+              <div class="gridDash">
+                <div class="card">
+                  <h3>Quick Actions</h3>
+                  <div class="row">
+                    <button class="btn btn--primary" id="downloadBtn2" type="button">Download JSON</button>
+                    <button class="btn btn--ghost" id="openExportTabBtn" type="button">Buka Export/Import</button>
+                    <button class="btn btn--ghost" id="openPackagesTabBtn" type="button">Kelola Paket</button>
+                  </div>
+                  <p class="muted small">
+                    Tip: gunakan <strong>Preview Landing</strong> untuk melihat perubahan draft (ambil dari localStorage) tanpa publish file.
+                  </p>
+                </div>
+                <div class="card">
+                  <h3>Status</h3>
+                  <div class="statusList" id="statusList"></div>
+                </div>
+              </div>
+            </div>
+
             <!-- Umum -->
-            <div class="tab" id="tab-umum">
+            <div class="tab is-hidden" id="tab-umum">
               <div class="card">
                 <h3>Brand & Kontak</h3>
                 <div class="grid2">
@@ -245,6 +280,10 @@
                 <h3>Export / Import</h3>
                 <p class="muted">
                   Export untuk simpan ke file JSON. Import untuk memuat JSON yang sudah kamu edit/backup.
+                </p>
+                <p class="muted small">
+                  Publish flow (tanpa backend): download JSON lalu ganti file <strong>`content/content.json`</strong> di repo (commit + push).
+                  Landing page otomatis membaca file tersebut.
                 </p>
                 <div class="row">
                   <button class="btn btn--primary" id="downloadBtn" type="button">Download JSON</button>
