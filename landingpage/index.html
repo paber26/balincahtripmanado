@@ -25,6 +25,21 @@
   <body>
     <a class="skip" href="#main">Lewati ke konten</a>
 
+    <div class="topbar" aria-label="Info cepat">
+      <div class="container topbar__inner">
+        <div class="topbar__left">
+          <a class="topbar__item" id="waTopLink" href="#" target="_blank" rel="noreferrer">WhatsApp</a>
+          <span class="sep" aria-hidden="true">•</span>
+          <a class="topbar__item" id="igTopLink" href="#" target="_blank" rel="noreferrer">Instagram</a>
+          <span class="sep" aria-hidden="true">•</span>
+          <span class="topbar__item" id="locationTopText">Pantai Liang, Bunaken</span>
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__badge">Open Trip • Private Trip • Charter</span>
+        </div>
+      </div>
+    </div>
+
     <header class="header" id="top">
       <div class="container header__inner">
         <a class="brand" href="#top" aria-label="Balincah Trip Manado">
@@ -80,7 +95,7 @@
 
             <div class="hero__highlights">
               <div class="mini">
-                <div class="mini__k">Trip Harian</div>
+                <div class="mini__k">Destinasi</div>
                 <div class="mini__v">Bunaken • Nain • Siladen</div>
               </div>
               <div class="mini">
@@ -88,29 +103,40 @@
                 <div class="mini__v">Snorkeling • Diving • Island Hopping</div>
               </div>
               <div class="mini">
-                <div class="mini__k">Booking</div>
-                <div class="mini__v">Cepat via WhatsApp</div>
+                <div class="mini__k">Support</div>
+                <div class="mini__v">Guide lokal • Dokumentasi</div>
               </div>
             </div>
           </div>
 
-          <div class="hero__media" aria-label="Visual Bunaken">
-            <div class="glassCard">
-              <div class="glassCard__title">Ocean Vibes</div>
-              <div class="glassCard__meta">
-                <span>Modern • Tropical • Clean</span>
-                <span class="dot" aria-hidden="true"></span>
-                <span>CTA selalu terlihat</span>
+          <div class="hero__media" aria-label="Form pencarian trip">
+            <div class="heroCard">
+              <div class="heroCard__head">
+                <div class="heroCard__title">Cari Trip</div>
+                <div class="heroCard__sub">Pilih paket, tanggal, dan jumlah peserta.</div>
               </div>
-              <div class="glassCard__grid">
-                <div class="ph ph--1" aria-hidden="true"></div>
-                <div class="ph ph--2" aria-hidden="true"></div>
-                <div class="ph ph--3" aria-hidden="true"></div>
-                <div class="ph ph--4" aria-hidden="true"></div>
-              </div>
-              <p class="hint">
-                Ganti placeholder ini dengan foto/video asli (drone, underwater, peserta trip) untuk tampilan maksimal.
-              </p>
+              <form class="heroForm" id="heroSearchForm">
+                <div class="heroForm__field">
+                  <label for="heroPaket">Paket</label>
+                  <select id="heroPaket" name="paket"></select>
+                </div>
+                <div class="heroForm__grid">
+                  <div class="heroForm__field">
+                    <label for="heroDate">Tanggal</label>
+                    <input id="heroDate" name="tanggal" type="date" required />
+                  </div>
+                  <div class="heroForm__field">
+                    <label for="heroGuests">Peserta</label>
+                    <input id="heroGuests" name="jumlah" type="number" min="1" value="1" required />
+                  </div>
+                </div>
+                <div class="heroForm__field">
+                  <label for="heroNote">Catatan</label>
+                  <input id="heroNote" name="catatan" placeholder="contoh: bawa anak, request dokumentasi" />
+                </div>
+                <button class="btn btn--primary btn--lg heroForm__btn" type="submit">Lanjut Booking</button>
+                <p class="muted small">Akan diarahkan ke form booking (atau WhatsApp).</p>
+              </form>
             </div>
           </div>
         </div>
@@ -149,7 +175,7 @@
       <section class="section section--alt" id="paket">
         <div class="container">
           <div class="section__head">
-            <h2>Paket Wisata</h2>
+            <h2>Popular Tours</h2>
             <p class="muted">Pilih trip sesuai gaya liburanmu: gabung open trip atau ambil private trip yang lebih fleksibel.</p>
           </div>
 
