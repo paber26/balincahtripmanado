@@ -1,3 +1,7 @@
 contohweb/
 .DS_Store
-
+node_modules/
+.nuxt/
+.output/
+.nitro/
+.cache/
