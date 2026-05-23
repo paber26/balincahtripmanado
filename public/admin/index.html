@@ -78,15 +78,7 @@
     </header>
 
     <main class="main-layout" id="main">
-      <!-- Notice Section -->
-      <section class="notice container">
-        <div class="notice__inner">
-          <i data-lucide="info" class="notice__icon"></i>
-          <div>
-            <strong>Catatan Keamanan:</strong> Data tersimpan di browser (localStorage) dan bisa diekspor menjadi JSON. Ganti file <code>content/content.json</code> untuk update permanen.
-          </div>
-        </div>
-      </section>
+
 
       <!-- Auth Section -->
       <section class="auth container" id="auth">
@@ -111,7 +103,7 @@
       </section>
 
       <!-- App Content Section -->
-      <section class="app container is-hidden" id="app">
+      <section class="app is-hidden" id="app">
         <div class="app-layout">
           <!-- Left Sidebar -->
           <aside class="sidebar" id="sidebar">
@@ -217,6 +209,16 @@
 
           <!-- Right Content Panel -->
           <section class="panel">
+            <!-- Notice Section -->
+            <div class="notice mb-4">
+              <div class="notice__inner">
+                <i data-lucide="info" class="notice__icon"></i>
+                <div>
+                  <strong>Catatan Keamanan:</strong> Data tersimpan di browser (localStorage) dan bisa diekspor menjadi JSON. Ganti file <code>content/content.json</code> untuk update permanen.
+                </div>
+              </div>
+            </div>
+
             <div class="dashboard-bread">
               <div class="dashboard-bread__left">
                 <h2 id="tabTitle" class="dashboard-bread__title">Dashboard</h2>

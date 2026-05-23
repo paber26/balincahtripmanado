@@ -332,11 +332,10 @@ h1, h2, h3, h4 {
 }
 
 .app-layout {
-  display: grid;
-  grid-template-columns: var(--sidebar-width) 1fr;
-  gap: 24px;
-  margin-top: 16px;
-  align-items: start;
+  display: block;
+  margin-left: var(--sidebar-width);
+  padding: 30px 40px;
+  min-height: calc(100vh - var(--topbar-height));
 }
 
 /* Notices */
@@ -366,14 +365,17 @@ h1, h2, h3, h4 {
 /* Sidebar Navigation (Rica style) */
 .sidebar {
   background-color: #ffffff;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
+  border-right: 1px solid var(--border);
   box-shadow: var(--shadow);
-  padding: 20px;
-  position: sticky;
-  top: calc(var(--topbar-height) + 16px);
-  max-height: calc(100vh - var(--topbar-height) - 40px);
+  padding: 24px 20px;
+  position: fixed;
+  left: 0;
+  top: var(--topbar-height);
+  bottom: 0;
+  width: var(--sidebar-width);
   overflow-y: auto;
+  z-index: 90;
+  border-radius: 0;
 }
 
 .author-content {
@@ -1333,12 +1335,18 @@ input:focus, textarea:focus, select:focus {
 /* Responsive adjustments */
 @media (max-width: 991px) {
   .app-layout {
-    grid-template-columns: 1fr;
+    margin-left: 0;
+    padding: 20px 16px;
   }
   
   .sidebar {
     position: static;
-    max-height: none;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+    box-shadow: none;
   }
   
   .kpis {
