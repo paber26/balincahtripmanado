@@ -25,7 +25,63 @@
         "Snorkeling",
         "Kunjungan pulau",
         "Life jacket"
-      ]
+      ],
+      "exclusions": [
+        "Pengeluaran pribadi selama trip",
+        "Penerbangan / Transportasi ke meeting point Manado",
+        "Tips untuk tour guide / crew boat (sukarela)",
+        "Asuransi perjalanan (opsional)",
+        "Peralatan diving tambahan di luar paket snorkeling"
+      ],
+      "itinerary": [
+        {
+          "time": "08.00",
+          "text": "Meeting point di Pelabuhan Manado"
+        },
+        {
+          "time": "08.30",
+          "text": "Berangkat menuju Bunaken"
+        },
+        {
+          "time": "09.30",
+          "text": "Tiba di Bunaken dan briefing singkat"
+        },
+        {
+          "time": "10.00",
+          "text": "Snorkeling / diving / foto-foto"
+        },
+        {
+          "time": "12.00",
+          "text": "Istirahat dan makan siang"
+        },
+        {
+          "time": "13.00",
+          "text": "Island hopping / kunjungan spot wisata"
+        },
+        {
+          "time": "15.00",
+          "text": "Perjalanan kembali ke Manado"
+        },
+        {
+          "time": "16.00",
+          "text": "Trip selesai"
+        }
+      ],
+      "accommodations": [
+        "Dermaga penyeberangan Marina Plaza Manado",
+        "Fasilitas peristirahatan di Pantai Liang Bunaken",
+        "Sewa gazebo pantai (opsional)",
+        "Kamar bilas / kamar ganti setelah snorkeling/diving"
+      ],
+      "location_detail": "Spot Snorkeling Bunaken, Nain Island, Siladen Island, Sulawesi Utara.",
+      "policies": [
+        "DP (Down Payment) minimal 30% didepositkan saat melakukan booking.",
+        "Pelunasan dilakukan paling lambat pada hari H sebelum kapal berangkat.",
+        "Pembatalan trip oleh peserta sebelum H-3 dapat mengembalikan DP sebesar 50%.",
+        "Pembatalan trip oleh pihak Balincah Trip akibat cuaca buruk (Force Majeure) akan direfund penuh (100%).",
+        "Anak di bawah 3 tahun bebas biaya (gratis)."
+      ],
+      "gallery": []
     },
     {
       "name": "Private Trip Bunaken",
@@ -44,7 +100,62 @@
         "Spot foto terbaik",
         "Snorkeling",
         "Dokumentasi"
-      ]
+      ],
+      "exclusions": [
+        "Pengeluaran pribadi selama trip",
+        "Penerbangan / Transportasi ke meeting point Manado",
+        "Tips untuk tour guide / crew boat (sukarela)",
+        "Asuransi perjalanan (opsional)"
+      ],
+      "itinerary": [
+        {
+          "time": "08.00",
+          "text": "Meeting point di Pelabuhan Manado"
+        },
+        {
+          "time": "08.30",
+          "text": "Berangkat menuju Bunaken"
+        },
+        {
+          "time": "09.30",
+          "text": "Tiba di Bunaken dan briefing singkat"
+        },
+        {
+          "time": "10.00",
+          "text": "Snorkeling / diving / foto-foto"
+        },
+        {
+          "time": "12.00",
+          "text": "Istirahat dan makan siang"
+        },
+        {
+          "time": "13.00",
+          "text": "Island hopping / kunjungan spot wisata"
+        },
+        {
+          "time": "15.00",
+          "text": "Perjalanan kembali ke Manado"
+        },
+        {
+          "time": "16.00",
+          "text": "Trip selesai"
+        }
+      ],
+      "accommodations": [
+        "Dermaga penyeberangan Marina Plaza Manado",
+        "Fasilitas peristirahatan di Pantai Liang Bunaken",
+        "Sewa gazebo pantai (opsional)",
+        "Kamar bilas / kamar ganti setelah snorkeling/diving"
+      ],
+      "location_detail": "Spot Snorkeling Bunaken, Nain Island, Siladen Island, Sulawesi Utara.",
+      "policies": [
+        "DP (Down Payment) minimal 30% didepositkan saat melakukan booking.",
+        "Pelunasan dilakukan paling lambat pada hari H sebelum kapal berangkat.",
+        "Pembatalan trip oleh peserta sebelum H-3 dapat mengembalikan DP sebesar 50%.",
+        "Pembatalan trip oleh pihak Balincah Trip akibat cuaca buruk (Force Majeure) akan direfund penuh (100%).",
+        "Anak di bawah 3 tahun bebas biaya (gratis)."
+      ],
+      "gallery": []
     },
     {
       "name": "Boat Charter Bunaken",
@@ -61,7 +172,25 @@
         "Rute sesuai kebutuhan",
         "Waktu fleksibel",
         "Cocok untuk rombongan"
-      ]
+      ],
+      "exclusions": [
+        "Pengeluaran pribadi selama trip",
+        "Bahan bakar tambahan di luar estimasi rute",
+        "Asuransi perjalanan (opsional)"
+      ],
+      "itinerary": [],
+      "accommodations": [
+        "Fasilitas di atas kapal",
+        "Dermaga penyeberangan Marina Plaza Manado"
+      ],
+      "location_detail": "Perairan Bunaken, Nain, Siladen, dan sekitarnya sesuai request.",
+      "policies": [
+        "DP minimal 50% saat booking.",
+        "Pelunasan dilakukan sebelum keberangkatan.",
+        "Pembatalan H-3 atau lebih awal dapat refund 50%.",
+        "Cuaca buruk akan direschedule."
+      ],
+      "gallery": []
     },
     {
       "name": "Snorkeling Trip",
@@ -77,7 +206,44 @@
         "Spot snorkeling pilihan",
         "Peralatan snorkeling (sesuai paket)",
         "Pendampingan guide"
-      ]
+      ],
+      "exclusions": [
+        "Pengeluaran pribadi selama trip",
+        "Peralatan snorkeling pribadi jika tidak disediakan paket",
+        "Asuransi perjalanan (opsional)"
+      ],
+      "itinerary": [
+        {
+          "time": "08.00",
+          "text": "Meeting point di Pelabuhan Manado"
+        },
+        {
+          "time": "09.00",
+          "text": "Tiba di spot snorkeling Bunaken"
+        },
+        {
+          "time": "09.15",
+          "text": "Briefing dan perlengkapan"
+        },
+        {
+          "time": "09.30",
+          "text": "Snorkeling di spot pilihan"
+        },
+        {
+          "time": "12.00",
+          "text": "Kembali ke daratan"
+        }
+      ],
+      "accommodations": [
+        "Dermaga penyeberangan Marina Plaza Manado"
+      ],
+      "location_detail": "Spot Snorkeling unggulan di sekitar Bunaken.",
+      "policies": [
+        "DP minimal 30% saat booking.",
+        "Pelunasan sebelum keberangkatan.",
+        "Cuaca buruk direschedule atau refund penuh."
+      ],
+      "gallery": []
     },
     {
       "name": "Diving Experience",
@@ -93,7 +259,54 @@
         "Briefing & safety",
         "Spot diving unggulan",
         "Cocok untuk pemula & berpengalaman"
-      ]
+      ],
+      "exclusions": [
+        "Pengeluaran pribadi selama trip",
+        "Perlengkapan diving tambahan di luar paket",
+        "Asuransi perjalanan (opsional)"
+      ],
+      "itinerary": [
+        {
+          "time": "08.00",
+          "text": "Meeting point & briefing keselamatan"
+        },
+        {
+          "time": "09.00",
+          "text": "Tiba di spot diving"
+        },
+        {
+          "time": "09.15",
+          "text": "Persiapan peralatan"
+        },
+        {
+          "time": "09.30",
+          "text": "Dive 1"
+        },
+        {
+          "time": "11.00",
+          "text": "Istirahat permukaan"
+        },
+        {
+          "time": "11.30",
+          "text": "Dive 2 (opsional)"
+        },
+        {
+          "time": "13.00",
+          "text": "Kembali ke daratan"
+        }
+      ],
+      "accommodations": [
+        "Dermaga penyeberangan Marina Plaza Manado",
+        "Fasilitas bilas setelah diving"
+      ],
+      "location_detail": "Spot Diving unggulan di sekitar Bunaken.",
+      "policies": [
+        "DP minimal 30% saat booking.",
+        "Wajib mengisi form kesehatan sebelum diving.",
+        "Peserta dengan kondisi medis tertentu wajib konsultasi dokter.",
+        "Cuaca buruk direschedule atau refund penuh."
+      ],
+      "gallery": []
     },
     {
       "name": "Trip 3 Pulau (Bunaken - Nain - Siladen)",
@@ -109,7 +322,69 @@
         "Island hopping",
         "Spot pasir putih",
         "Dokumentasi momen"
-      ]
+      ],
+      "exclusions": [
+        "Pengeluaran pribadi selama trip",
+        "Penerbangan / Transportasi ke meeting point Manado",
+        "Tips untuk tour guide / crew boat (sukarela)",
+        "Asuransi perjalanan (opsional)"
+      ],
+      "itinerary": [
+        {
+          "time": "07.30",
+          "text": "Meeting point di Pelabuhan Manado"
+        },
+        {
+          "time": "08.00",
+          "text": "Berangkat menuju Bunaken"
+        },
+        {
+          "time": "09.00",
+          "text": "Snorkeling / explore Bunaken"
+        },
+        {
+          "time": "10.30",
+          "text": "Menuju Nain Island"
+        },
+        {
+          "time": "11.30",
+          "text": "Explore Nain Island"
+        },
+        {
+          "time": "12.30",
+          "text": "Makan siang & istirahat"
+        },
+        {
+          "time": "13.30",
+          "text": "Menuju Siladen Island"
+        },
+        {
+          "time": "14.30",
+          "text": "Explore Siladen - pasir putih"
+        },
+        {
+          "time": "15.30",
+          "text": "Perjalanan kembali ke Manado"
+        },
+        {
+          "time": "16.30",
+          "text": "Trip selesai"
+        }
+      ],
+      "accommodations": [
+        "Dermaga penyeberangan Marina Plaza Manado",
+        "Fasilitas di Pantai Liang Bunaken",
+        "Akses pasir putih Siladen"
+      ],
+      "location_detail": "Bunaken Island → Nain Island → Siladen Island, Sulawesi Utara.",
+      "policies": [
+        "DP minimal 30% saat booking.",
+        "Pelunasan sebelum keberangkatan.",
+        "Pembatalan H-3 refund 50%.",
+        "Cuaca buruk direschedule atau refund penuh.",
+        "Anak di bawah 3 tahun bebas biaya (gratis)."
+      ],
+      "gallery": []
     }
   ],
   "destinations": [
@@ -255,36 +530,5 @@
       "q": "Bagaimana cara booking?",
       "a": "Booking dapat dilakukan langsung melalui WhatsApp dengan mengisi nama, tanggal trip, jumlah peserta, dan jenis paket."
     }
-  ],
-  "instagram": {
-    "photos": [
-      {
-        "image": "/gotur/hero-1-1-image.jpg",
-        "caption": "Momen trip: view laut Bunaken",
-        "postUrl": ""
-      },
-      {
-        "image": "/gotur/hero-1-2-image.jpg",
-        "caption": "Underwater vibes",
-        "postUrl": ""
-      },
-      {
-        "image": "/gotur/hero-1-3-image.jpg",
-        "caption": "Island hopping vibes",
-        "postUrl": ""
-      },
-      {
-        "image": "/gotur/about-2-1.jpg",
-        "caption": "Spot foto & perjalanan",
-        "postUrl": ""
-      }
-    ],
-    "videos": [
-      {
-        "title": "Reels Trip (contoh)",
-        "embedUrl": "https://www.instagram.com/reel/INVALID/embed",
-        "postUrl": ""
-      }
-    ]
-  }
+  ]
 }

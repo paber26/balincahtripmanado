@@ -15,6 +15,7 @@
     "@supabase/supabase-js": "^2.106.1",
     "aos": "^2.3.4",
     "nuxt": "^3.13.2",
+    "postgres": "^3.4.9",
     "swiper": "^12.1.4"
   }
 }
