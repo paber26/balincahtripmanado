@@ -388,7 +388,10 @@ useHead(() => ({
             >
               <SwiperSlide v-for="(g, i) in gallerySlides" :key="i">
                 <div class="group overflow-hidden rounded-3xl border border-navy/10 bg-white/80 shadow-soft">
-                  <div class="h-56 w-full bg-[radial-gradient(260px_180px_at_40%_30%,rgba(0,174,239,0.45),transparent_62%),radial-gradient(260px_180px_at_70%_60%,rgba(255,212,59,0.22),transparent_62%),linear-gradient(140deg,rgba(6,40,61,0.05),rgba(0,174,239,0.10))]"></div>
+                  <div class="relative h-56 w-full overflow-hidden">
+                    <img v-if="g.image" :src="g.image" :alt="g.title || 'Momen Trip'" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <div v-else class="h-full w-full bg-[radial-gradient(260px_180px_at_40%_30%,rgba(0,174,239,0.45),transparent_62%),radial-gradient(260px_180px_at_70%_60%,rgba(255,212,59,0.22),transparent_62%),linear-gradient(140deg,rgba(6,40,61,0.05),rgba(0,174,239,0.10))]"></div>
+                  </div>
                   <div class="p-4">
                     <div class="font-display text-[16px] font-extrabold">{{ g.title }}</div>
                     <p class="mt-1 text-[13px] leading-6 text-black/65">{{ g.desc }}</p>

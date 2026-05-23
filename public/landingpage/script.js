@@ -191,7 +191,8 @@ function renderLandingContent(content) {
     const buttons = content.gallery.slice(0, 9).map((g, i) => {
       const title = escapeHtml(g.title || `Galeri ${i + 1}`);
       const desc = escapeHtml(g.desc || "");
-      return `<button class="g ${classes[i] || ""}" type="button" data-title="${title}" data-desc="${desc}" aria-label="Buka detail galeri ${i + 1}"></button>`;
+      const style = g.image ? `style="background: url('${g.image}') no-repeat center/cover;"` : "";
+      return `<button class="g ${classes[i] || ""}" ${style} type="button" data-title="${title}" data-desc="${desc}" aria-label="Buka detail galeri ${i + 1}"></button>`;
     });
     setHtmlIf("gallery", buttons.join(""));
   }

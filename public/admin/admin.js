@@ -22,6 +22,16 @@ function weakHash(str) {
   return `weak:${(h >>> 0).toString(16)}`;
 }
 
+function resolveAssetPath(path) {
+  if (!path) return "";
+  if (path.startsWith("/")) {
+    if (window.location.protocol === "file:") {
+      return ".." + path;
+    }
+  }
+  return path;
+}
+
 async function pinHash(pin) {
   if (globalThis.crypto?.subtle) {
     try {
@@ -91,15 +101,15 @@ function defaultContent() {
       { name: "Underwater Bunaken", desc: "Spot underwater yang kaya biota laut—pengalaman visual yang sulit dilupakan." },
     ],
     gallery: [
-      { title: "Drone View", desc: "Foto drone perjalanan ke Bunaken." },
-      { title: "Underwater", desc: "Terumbu karang dan ikan warna-warni." },
-      { title: "Peserta Trip", desc: "Momen seru bareng peserta trip." },
-      { title: "Kapal", desc: "Kapal wisata siap berangkat." },
-      { title: "Pulau & Pasir Putih", desc: "Spot foto pasir putih yang estetik." },
-      { title: "Sunset Vibes", desc: "Golden hour di laut Manado." },
-      { title: "Snorkeling Spot", desc: "Air jernih & view bawah laut." },
-      { title: "Island Hopping", desc: "Trip 3 pulau: Bunaken–Nain–Siladen." },
-      { title: "Resort Area", desc: "Area dermaga dan resort." },
+      { title: "Drone View", desc: "Foto drone perjalanan ke Bunaken.", image: "/gotur/hero-1-1-image.jpg" },
+      { title: "Underwater", desc: "Terumbu karang dan ikan warna-warni.", image: "/gotur/hero-1-2-image.jpg" },
+      { title: "Peserta Trip", desc: "Momen seru bareng peserta trip.", image: "/gotur/about-2-1.jpg" },
+      { title: "Kapal", desc: "Kapal wisata siap berangkat.", image: "/gotur/about-s-2-1.jpg" },
+      { title: "Pulau & Pasir Putih", desc: "Spot foto pasir putih yang estetik.", image: "/gotur/destination-slider-1-2-268x391.jpg" },
+      { title: "Sunset Vibes", desc: "Golden hour di laut Manado.", image: "/gotur/destination-slider-1-3-268x391.jpg" },
+      { title: "Snorkeling Spot", desc: "Air jernih & view bawah laut.", image: "/gotur/blog-7-343x241.jpg" },
+      { title: "Island Hopping", desc: "Trip 3 pulau: Bunaken–Nain–Siladen.", image: "/gotur/blog-9-343x241.jpg" },
+      { title: "Resort Area", desc: "Area dermaga dan resort.", image: "/gotur/blog-5-343x241.jpg" },
     ],
     itinerary: [
       { time: "08.00", text: "Meeting point di Pelabuhan Manado" },
@@ -428,20 +438,123 @@ function renderGalleryEditor(state) {
     });
     actions.appendChild(del);
 
-    const grid = document.createElement("div");
-    grid.className = "grid2";
-    grid.appendChild(
+    const layout = document.createElement("div");
+    layout.className = "grid2";
+    layout.style.alignItems = "start";
+    layout.style.marginTop = "12px";
+
+    // Left Column: Image upload & preview wrapper
+    const imgWrapper = document.createElement("div");
+    imgWrapper.className = "gallery-item-image-wrapper";
+
+    const updatePreview = () => {
+      imgWrapper.innerHTML = "";
+      if (g.image) {
+        const img = document.createElement("img");
+        img.className = "gallery-item-image-preview";
+        img.src = resolveAssetPath(g.image);
+        imgWrapper.appendChild(img);
+      } else {
+        const placeholder = document.createElement("div");
+        placeholder.className = "gallery-item-image-placeholder";
+        placeholder.innerHTML = `<i data-lucide="image"></i><span>Belum ada foto</span>`;
+        imgWrapper.appendChild(placeholder);
+      }
+
+      const btnContainer = document.createElement("div");
+      btnContainer.className = "gallery-upload-btn-container";
+
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.accept = "image/*";
+      fileInput.className = "is-hidden";
+
+      const uploadBtn = document.createElement("button");
+      uploadBtn.type = "button";
+      uploadBtn.className = "btn btn--ghost btn--full";
+      uploadBtn.innerHTML = `<i data-lucide="upload"></i> ${g.image ? 'Ganti Foto' : 'Upload Foto'}`;
+      uploadBtn.addEventListener("click", () => fileInput.click());
+
+      const statusText = document.createElement("div");
+      statusText.className = "upload-status is-hidden";
+
+      fileInput.addEventListener("change", async () => {
+        if (!fileInput.files || fileInput.files.length === 0) return;
+        const fileObj = fileInput.files[0];
+
+        const formData = new FormData();
+        formData.append("file", fileObj);
+
+        statusText.className = "upload-status upload-status--loading";
+        statusText.textContent = "Mengunggah...";
+        statusText.classList.remove("is-hidden");
+
+        try {
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await response.json();
+          if (result.success && result.url) {
+            g.image = result.url;
+            markDirty(state);
+            statusText.className = "upload-status upload-status--success";
+            statusText.textContent = "Berhasil!";
+            setTimeout(() => {
+              statusText.classList.add("is-hidden");
+            }, 1500);
+            updatePreview();
+          } else {
+            statusText.className = "upload-status upload-status--error";
+            statusText.textContent = "Gagal unggah.";
+          }
+        } catch (err) {
+          console.error(err);
+          statusText.className = "upload-status upload-status--error";
+          statusText.textContent = "Terjadi kesalahan.";
+        }
+      });
+
+      btnContainer.appendChild(uploadBtn);
+      btnContainer.appendChild(fileInput);
+      imgWrapper.appendChild(btnContainer);
+      imgWrapper.appendChild(statusText);
+
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons({
+          nameAttr: "data-lucide",
+          attrs: { class: "icon" },
+          nodeList: imgWrapper.querySelectorAll("[data-lucide]")
+        });
+      }
+    };
+
+    updatePreview();
+    layout.appendChild(imgWrapper);
+
+    // Right Column: Input fields
+    const fieldsContainer = document.createElement("div");
+    fieldsContainer.className = "field";
+    fieldsContainer.style.gap = "12px";
+
+    fieldsContainer.appendChild(
       fieldInput("Judul", g.title || "", (v) => {
         g.title = v;
         markDirty(state);
         if (titleEl) titleEl.textContent = v || `Galeri #${idx + 1}`;
-      }),
+      })
     );
-    grid.appendChild(fieldTextarea("Deskripsi", g.desc || "", (v) => {
-      g.desc = v;
-      markDirty(state);
-    }));
-    wrap.appendChild(grid);
+
+    fieldsContainer.appendChild(
+      fieldTextarea("Deskripsi", g.desc || "", (v) => {
+        g.desc = v;
+        markDirty(state);
+      })
+    );
+
+    layout.appendChild(fieldsContainer);
+    wrap.appendChild(layout);
+
     return wrap;
   });
 }
@@ -683,7 +796,7 @@ function hookAddButtons(state) {
     renderDestinationsEditor(state);
   });
   $("addGalleryBtn")?.addEventListener("click", () => {
-    state.content.gallery.push({ title: "Item Galeri", desc: "" });
+    state.content.gallery.push({ title: "Item Galeri", desc: "", image: "" });
     markDirty(state);
     renderGalleryEditor(state);
   });
@@ -777,11 +890,33 @@ function hookAuth(state) {
 }
 
 function hookActions(state) {
-  $("saveBtn")?.addEventListener("click", () => {
+  $("saveBtn")?.addEventListener("click", async () => {
     saveContent(state.content);
     markClean(state);
     const rawJson = $("rawJson");
     if (rawJson) rawJson.value = JSON.stringify(state.content, null, 2);
+
+    const saveHint = $("saveHint");
+    if (saveHint) saveHint.textContent = "Menyimpan ke server...";
+
+    try {
+      const response = await fetch("/api/save-content", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(state.content)
+      });
+      const result = await response.json();
+      if (result.success) {
+        if (saveHint) saveHint.textContent = "Tersimpan di server & browser.";
+      } else {
+        if (saveHint) saveHint.textContent = "Gagal simpan ke server (tersimpan di browser).";
+      }
+    } catch (err) {
+      console.error(err);
+      if (saveHint) saveHint.textContent = "Koneksi gagal (tersimpan di browser).";
+    }
   });
 
   $("copyJsonBtn")?.addEventListener("click", async () => {
@@ -1048,11 +1183,11 @@ function renderPackageDetailView(state) {
   const bannerImg = $("detailPackageBanner");
   if (bannerImg) {
     const banners = [
-      "../gotur/hero-1-1-image.jpg",
-      "../gotur/hero-1-2-image.jpg",
-      "../gotur/hero-1-3-image.jpg",
+      "/gotur/hero-1-1-image.jpg",
+      "/gotur/hero-1-2-image.jpg",
+      "/gotur/hero-1-3-image.jpg",
     ];
-    bannerImg.src = banners[state.activePackageIdx % banners.length];
+    bannerImg.src = resolveAssetPath(banners[state.activePackageIdx % banners.length]);
   }
 
   // Update Itinerary
@@ -1074,18 +1209,18 @@ function renderPackageDetailView(state) {
     galGrid.innerHTML = "";
     const items = state.content.gallery || [];
     const images = [
-      "../gotur/about-2-1.jpg",
-      "../gotur/about-s-2-1.jpg",
-      "../gotur/destination-slider-1-2-268x391.jpg",
-      "../gotur/destination-slider-1-3-268x391.jpg",
-      "../gotur/hero-1-1-image.jpg",
-      "../gotur/hero-1-2-image.jpg",
-      "../gotur/hero-1-3-image.jpg",
+      "/gotur/about-2-1.jpg",
+      "/gotur/about-s-2-1.jpg",
+      "/gotur/destination-slider-1-2-268x391.jpg",
+      "/gotur/destination-slider-1-3-268x391.jpg",
+      "/gotur/hero-1-1-image.jpg",
+      "/gotur/hero-1-2-image.jpg",
+      "/gotur/hero-1-3-image.jpg",
     ];
     items.slice(0, 4).forEach((g, i) => {
       const item = document.createElement("div");
       item.className = "gallery-grid-item";
-      const src = images[i % images.length];
+      const src = resolveAssetPath(g.image || images[i % images.length]);
       item.innerHTML = `<img src="${src}" alt="${escapeHtml(g.title)}" /><div class="gallery-grid-item__overlay">${escapeHtml(g.title)}</div>`;
       galGrid.appendChild(item);
     });

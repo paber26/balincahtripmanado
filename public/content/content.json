@@ -88,15 +88,15 @@
     { "name": "Underwater Bunaken", "desc": "Spot underwater yang kaya biota laut—pengalaman visual yang sulit dilupakan." }
   ],
   "gallery": [
-    { "title": "Drone View", "desc": "Foto drone perjalanan ke Bunaken." },
-    { "title": "Underwater", "desc": "Terumbu karang dan ikan warna-warni." },
-    { "title": "Peserta Trip", "desc": "Momen seru bareng peserta trip." },
-    { "title": "Kapal", "desc": "Kapal wisata siap berangkat." },
-    { "title": "Pulau & Pasir Putih", "desc": "Spot foto pasir putih yang estetik." },
-    { "title": "Sunset Vibes", "desc": "Golden hour di laut Manado." },
-    { "title": "Snorkeling Spot", "desc": "Air jernih & view bawah laut." },
-    { "title": "Island Hopping", "desc": "Trip 3 pulau: Bunaken–Nain–Siladen." },
-    { "title": "Resort Area", "desc": "Area dermaga dan resort." }
+    { "title": "Drone View", "desc": "Foto drone perjalanan ke Bunaken.", "image": "/gotur/hero-1-1-image.jpg" },
+    { "title": "Underwater", "desc": "Terumbu karang dan ikan warna-warni.", "image": "/gotur/hero-1-2-image.jpg" },
+    { "title": "Peserta Trip", "desc": "Momen seru bareng peserta trip.", "image": "/gotur/about-2-1.jpg" },
+    { "title": "Kapal", "desc": "Kapal wisata siap berangkat.", "image": "/gotur/about-s-2-1.jpg" },
+    { "title": "Pulau & Pasir Putih", "desc": "Spot foto pasir putih yang estetik.", "image": "/gotur/destination-slider-1-2-268x391.jpg" },
+    { "title": "Sunset Vibes", "desc": "Golden hour di laut Manado.", "image": "/gotur/destination-slider-1-3-268x391.jpg" },
+    { "title": "Snorkeling Spot", "desc": "Air jernih & view bawah laut.", "image": "/gotur/blog-7-343x241.jpg" },
+    { "title": "Island Hopping", "desc": "Trip 3 pulau: Bunaken–Nain–Siladen.", "image": "/gotur/blog-9-343x241.jpg" },
+    { "title": "Resort Area", "desc": "Area dermaga dan resort.", "image": "/gotur/blog-5-343x241.jpg" }
   ],
   "itinerary": [
     { "time": "08.00", "text": "Meeting point di Pelabuhan Manado" },
