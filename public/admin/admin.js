@@ -625,6 +625,11 @@ function renderGalleryEditor(state) {
 
     return wrap;
   });
+
+  // Ensure Lucide icons are initialized for all newly rendered gallery items
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
 }
 
 function renderItineraryEditor(state) {}
@@ -826,9 +831,17 @@ function hookAddButtons(state) {
     renderDestinationsEditor(state);
   });
   $("addGalleryBtn")?.addEventListener("click", () => {
-    state.content.gallery.push({ title: "Item Galeri", desc: "", image: "" });
+    state.content.gallery.push({ title: "Item Galeri Baru", desc: "", image: "" });
     markDirty(state);
     renderGalleryEditor(state);
+    // Scroll to the newly added item
+    const galleryList = $("galleryList");
+    if (galleryList) {
+      const lastItem = galleryList.lastElementChild;
+      if (lastItem) {
+        setTimeout(() => lastItem.scrollIntoView({ behavior: "smooth", block: "nearest" }), 50);
+      }
+    }
   });
   $("addReasonBtn")?.addEventListener("click", () => {
     state.content.reasons.push("Poin baru");
