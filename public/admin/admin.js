@@ -234,8 +234,10 @@ function setTab(state, tabKey) {
   const [t, d] = titles[tabKey] || ["Admin", ""];
   const tabTitle = $("tabTitle");
   const tabDesc = $("tabDesc");
+  const breadcrumbActive = $("breadcrumbActive");
   if (tabTitle) tabTitle.textContent = t;
   if (tabDesc) tabDesc.textContent = d;
+  if (breadcrumbActive) breadcrumbActive.textContent = t;
 
   const rawJson = $("rawJson");
   if (tabKey === "export" && rawJson) rawJson.value = JSON.stringify(state.content, null, 2);

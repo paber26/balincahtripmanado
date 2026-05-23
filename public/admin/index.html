@@ -115,14 +115,14 @@
         <div class="app-layout">
           <!-- Left Sidebar -->
           <aside class="sidebar" id="sidebar">
-            <div class="sidebar__head">
-              <div class="sidebarUser">
-                <div class="sidebarUser__avatar">
+            <div class="author-content">
+              <div class="author-content__inner">
+                <div class="author-img">
                   <img src="../gotur/about-2-1.jpg" alt="Admin Avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80'" />
                 </div>
-                <div class="sidebarUser__meta">
-                  <div class="sidebarUser__name">Emay Walter</div>
-                  <div class="sidebarUser__role">Admin Balincah</div>
+                <div class="author-bio">
+                  <h4 class="author__title">Emay Walter</h4>
+                  <span class="author__meta">Member Sejak Mei 2026</span>
                 </div>
               </div>
               <div class="sidebarQuick">
@@ -217,21 +217,28 @@
 
           <!-- Right Content Panel -->
           <section class="panel">
-            <div class="panel__head">
-              <div>
-                <h2 id="tabTitle">Dashboard</h2>
-                <p class="muted" id="tabDesc">Ringkasan konten dan tindakan cepat.</p>
+            <div class="dashboard-bread">
+              <div class="dashboard-bread__left">
+                <h2 id="tabTitle" class="dashboard-bread__title">Dashboard</h2>
+                <p id="tabDesc" class="dashboard-bread__desc">Ringkasan konten dan tindakan cepat.</p>
               </div>
-              <div class="panel__actions">
-                <button class="btn btn--ghost" type="button" id="copyJsonBtn">
-                  <i data-lucide="copy"></i> Salin JSON
-                </button>
-                <button class="btn btn--ghost" type="button" id="previewMsgBtn">
-                  <i data-lucide="message-circle"></i> Preview WA
-                </button>
-                <a class="btn btn--ghost" id="waTestLink" href="#" target="_blank" rel="noreferrer">
-                  <i data-lucide="send"></i> Tes WhatsApp
-                </a>
+              <div class="dashboard-bread__right">
+                <div class="dashboard-bread__actions">
+                  <button class="btn-translucent" type="button" id="copyJsonBtn">
+                    <i data-lucide="copy"></i> <span class="hide-mobile">Salin JSON</span>
+                  </button>
+                  <button class="btn-translucent" type="button" id="previewMsgBtn">
+                    <i data-lucide="message-circle"></i> <span class="hide-mobile">Preview WA</span>
+                  </button>
+                  <a class="btn-translucent" id="waTestLink" href="#" target="_blank" rel="noreferrer">
+                    <i data-lucide="send"></i> <span class="hide-mobile">Tes WhatsApp</span>
+                  </a>
+                </div>
+                <div class="breadcrumbs-pill">
+                  <span class="breadcrumbs-pill__item">Admin</span>
+                  <i data-lucide="chevron-right" class="breadcrumbs-pill__separator"></i>
+                  <span class="breadcrumbs-pill__item" id="breadcrumbActive">Dashboard</span>
+                </div>
               </div>
             </div>
 
