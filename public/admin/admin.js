@@ -196,12 +196,25 @@ function markClean(state) {
   if (hint) hint.textContent = "Tersimpan di browser.";
 }
 
-function navigateTab(state, tabKey) {
-  if (window.location.hash.substring(1) === tabKey) {
-    setTab(state, tabKey);
-  } else {
-    window.location.hash = tabKey;
+function getTabFromPath() {
+  const path = window.location.pathname;
+  const normalized = path.replace(/\/$/, "");
+  const segments = normalized.split("/");
+  const lastSegment = segments[segments.length - 1];
+  
+  const validTabs = ["dashboard", "umum", "paket", "detail-paket", "destinasi", "galeri", "itinerary", "alasan", "testimoni", "faq"];
+  if (validTabs.includes(lastSegment)) {
+    return lastSegment;
   }
+  return "dashboard";
+}
+
+function navigateTab(state, tabKey) {
+  const newPath = "/admin/" + tabKey;
+  if (window.location.pathname !== newPath) {
+    window.history.pushState(null, "", newPath);
+  }
+  setTab(state, tabKey);
 }
 
 function setTab(state, tabKey) {
@@ -854,12 +867,9 @@ function hookNav(state) {
     }
   });
 
-  window.addEventListener("hashchange", () => {
-    const hash = window.location.hash.substring(1);
-    const validTabs = ["dashboard", "umum", "paket", "detail-paket", "destinasi", "galeri", "itinerary", "alasan", "testimoni", "faq"];
-    if (validTabs.includes(hash)) {
-      setTab(state, hash);
-    }
+  window.addEventListener("popstate", () => {
+    const tabKey = getTabFromPath();
+    setTab(state, tabKey);
   });
 }
 
@@ -1089,13 +1099,11 @@ function init() {
     }
   });
 
-  const validTabs = ["dashboard", "umum", "paket", "detail-paket", "destinasi", "galeri", "itinerary", "alasan", "testimoni", "faq"];
-  const currentHash = window.location.hash.substring(1);
-  if (validTabs.includes(currentHash)) {
-    setTab(state, currentHash);
-  } else {
-    setTab(state, "dashboard");
-    window.location.hash = "dashboard";
+  const activeTab = getTabFromPath();
+  setTab(state, activeTab);
+  const newPath = "/admin/" + activeTab;
+  if (window.location.pathname !== newPath) {
+    window.history.replaceState(null, "", newPath);
   }
   markClean(state);
   
