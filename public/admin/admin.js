@@ -196,6 +196,14 @@ function markClean(state) {
   if (hint) hint.textContent = "Tersimpan di browser.";
 }
 
+function navigateTab(state, tabKey) {
+  if (window.location.hash.substring(1) === tabKey) {
+    setTab(state, tabKey);
+  } else {
+    window.location.hash = tabKey;
+  }
+}
+
 function setTab(state, tabKey) {
   state.activeTab = tabKey;
   const tabs = document.querySelectorAll(".tab");
@@ -352,7 +360,7 @@ function renderPackageEditor(state) {
     const viewDet = iconButton("Lihat Detail", "iconBtn--info");
     viewDet.addEventListener("click", () => {
       state.activePackageIdx = idx;
-      setTab(state, "detail-paket");
+      navigateTab(state, "detail-paket");
     });
     actions.appendChild(viewDet);
 
@@ -829,7 +837,7 @@ function hookNav(state) {
     btn.addEventListener("click", () => {
       const tab = btn.getAttribute("data-tab");
       if (tab) {
-        setTab(state, tab);
+        navigateTab(state, tab);
         if (window.innerWidth <= 991) {
           document.body.classList.remove("sidebar-open");
         }
@@ -843,6 +851,14 @@ function hookNav(state) {
       document.body.classList.toggle("sidebar-collapsed");
     } else {
       document.body.classList.toggle("sidebar-open");
+    }
+  });
+
+  window.addEventListener("hashchange", () => {
+    const hash = window.location.hash.substring(1);
+    const validTabs = ["dashboard", "umum", "paket", "detail-paket", "destinasi", "galeri", "itinerary", "alasan", "testimoni", "faq"];
+    if (validTabs.includes(hash)) {
+      setTab(state, hash);
     }
   });
 }
@@ -962,7 +978,7 @@ function hookActions(state) {
   $("downloadBtn2")?.addEventListener("click", () => {
     downloadJson("content.json", state.content);
   });
-  $("openPackagesTabBtn")?.addEventListener("click", () => setTab(state, "paket"));
+  $("openPackagesTabBtn")?.addEventListener("click", () => navigateTab(state, "paket"));
 
   $("previewLandingBtn")?.addEventListener("click", () => {
     // Preview mode uses localStorage data on landing (implemented on landing side).
@@ -1073,7 +1089,14 @@ function init() {
     }
   });
 
-  setTab(state, "dashboard");
+  const validTabs = ["dashboard", "umum", "paket", "detail-paket", "destinasi", "galeri", "itinerary", "alasan", "testimoni", "faq"];
+  const currentHash = window.location.hash.substring(1);
+  if (validTabs.includes(currentHash)) {
+    setTab(state, currentHash);
+  } else {
+    setTab(state, "dashboard");
+    window.location.hash = "dashboard";
+  }
   markClean(state);
   
   if (typeof lucide !== "undefined") {
@@ -1291,7 +1314,7 @@ function saveEditPackageModal(state) {
   $("editPackageModal")?.close();
   
   if (idx === -1) {
-    setTab(state, "detail-paket");
+    navigateTab(state, "detail-paket");
   }
 }
 
@@ -1307,7 +1330,7 @@ function deletePackageAt(state, idx) {
   renderPackageEditor(state);
   state.activePackageIdx = Math.max(0, idx - 1);
   renderPackageDetailView(state);
-  setTab(state, "paket");
+  navigateTab(state, "paket");
 }
 
 function hookDetailPaket(state) {
