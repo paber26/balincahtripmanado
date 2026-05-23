@@ -4,6 +4,29 @@ const ADMIN_STORAGE_KEY = "balincah_admin_content_v1";
 const CONTENT_URL = "../api/content";
 let currentContent = null;
 
+const standardExclusions = [
+  "Pengeluaran pribadi selama trip",
+  "Penerbangan / Transportasi ke meeting point Manado",
+  "Tips untuk tour guide / crew boat (sukarela)",
+  "Asuransi perjalanan (opsional)",
+  "Peralatan diving tambahan di luar paket snorkeling"
+];
+
+const standardAccommodations = [
+  "Dermaga penyeberangan Marina Plaza Manado",
+  "Fasilitas peristirahatan di Pantai Liang Bunaken",
+  "Sewa gazebo pantai (opsional)",
+  "Kamar bilas / kamar ganti setelah snorkeling/diving"
+];
+
+const standardPolicies = [
+  "DP (Down Payment) minimal 30% didepositkan saat melakukan booking.",
+  "Pelunasan dilakukan paling lambat pada hari H sebelum kapal berangkat.",
+  "Pembatalan trip oleh peserta sebelum H-3 dapat mengembalikan DP sebesar 50%.",
+  "Pembatalan trip oleh pihak Balincah Trip akibat cuaca buruk (Force Majeure) akan direfund penuh (100%).",
+  "Anak di bawah 3 tahun bebas biaya (gratis)."
+];
+
 function encodeWhatsAppMessage(message) {
   return encodeURIComponent(message.trim());
 }
@@ -417,6 +440,43 @@ function init() {
       pkgModalFacilities.innerHTML = facilities.length > 0 
         ? facilities.map(f => `<li>${escapeHtml(f)}</li>`).join("")
         : `<li>Tidak ada detail fasilitas.</li>`;
+
+      const pkgModalExclusions = document.getElementById("pkgModalExclusions");
+      const pkgModalItinerary = document.getElementById("pkgModalItinerary");
+      const pkgModalAccommodations = document.getElementById("pkgModalAccommodations");
+      const pkgModalLocation = document.getElementById("pkgModalLocation");
+      const pkgModalPolicies = document.getElementById("pkgModalPolicies");
+
+      const exclusions = Array.isArray(pkg.exclusions) ? pkg.exclusions : standardExclusions;
+      if (pkgModalExclusions) {
+        pkgModalExclusions.innerHTML = exclusions.map(exc => `<li>${escapeHtml(exc)}</li>`).join("");
+      }
+
+      const itinerary = Array.isArray(pkg.itinerary) ? pkg.itinerary : (currentContent.itinerary || []);
+      if (pkgModalItinerary) {
+        pkgModalItinerary.innerHTML = itinerary.length > 0
+          ? itinerary.map(it => `
+              <div style="display: flex; gap: 10px; font-size: 13px; line-height: 1.5;">
+                <span style="font-weight: 700; color: var(--ocean); min-width: 50px;">${escapeHtml(it.time)}</span>
+                <span style="color: var(--text);">${escapeHtml(it.text)}</span>
+              </div>
+            `).join("")
+          : `<div style="font-size: 13px; color: var(--muted);">(Tidak ada itinerary tertulis)</div>`;
+      }
+
+      const accommodations = Array.isArray(pkg.accommodations) ? pkg.accommodations : standardAccommodations;
+      if (pkgModalAccommodations) {
+        pkgModalAccommodations.innerHTML = accommodations.map(acc => `<li>${escapeHtml(acc)}</li>`).join("");
+      }
+
+      if (pkgModalLocation) {
+        pkgModalLocation.textContent = pkg.location || "Spot Snorkeling Bunaken, Nain Island, Siladen Island, Sulawesi Utara.";
+      }
+
+      const policies = Array.isArray(pkg.policies) ? pkg.policies : standardPolicies;
+      if (pkgModalPolicies) {
+        pkgModalPolicies.innerHTML = policies.map(pol => `<li>${escapeHtml(pol)}</li>`).join("");
+      }
         
       if (pkgModalBookBtn) {
         pkgModalBookBtn.onclick = () => {

@@ -1164,7 +1164,22 @@ const standardExclusions = [
   "Penerbangan / Transportasi ke meeting point Manado",
   "Tips untuk tour guide / crew boat (sukarela)",
   "Asuransi perjalanan (opsional)",
-  "Peralatan diving tambahan di luar paket snorkeling"
+  "Peralalan diving tambahan di luar paket snorkeling"
+];
+
+const standardAccommodations = [
+  "Dermaga penyeberangan Marina Plaza Manado",
+  "Fasilitas peristirahatan di Pantai Liang Bunaken",
+  "Sewa gazebo pantai (opsional)",
+  "Kamar bilas / kamar ganti setelah snorkeling/diving"
+];
+
+const standardPolicies = [
+  "DP (Down Payment) minimal 30% didepositkan saat melakukan booking.",
+  "Pelunasan dilakukan paling lambat pada hari H sebelum kapal berangkat.",
+  "Pembatalan trip oleh peserta sebelum H-3 dapat mengembalikan DP sebesar 50%.",
+  "Pembatalan trip oleh pihak Balincah Trip akibat cuaca buruk (Force Majeure) akan direfund penuh (100%).",
+  "Anak di bawah 3 tahun bebas biaya (gratis)."
 ];
 
 function renderPackageDetailView(state) {
@@ -1226,7 +1241,8 @@ function renderPackageDetailView(state) {
   const excList = $("detailPackageExclusions");
   if (excList) {
     excList.innerHTML = "";
-    standardExclusions.forEach((exc) => {
+    const exclusions = pkg.exclusions || standardExclusions;
+    exclusions.forEach((exc) => {
       const li = document.createElement("li");
       li.textContent = exc;
       excList.appendChild(li);
@@ -1248,12 +1264,42 @@ function renderPackageDetailView(state) {
   const itinTimeline = $("detailPackageItinerary");
   if (itinTimeline) {
     itinTimeline.innerHTML = "";
-    const items = state.content.itinerary || [];
+    const items = pkg.itinerary || state.content.itinerary || [];
     items.forEach((it) => {
       const row = document.createElement("div");
       row.className = "itinerary-row";
       row.innerHTML = `<span class="itinerary-row__time">${escapeHtml(it.time)}</span><span class="itinerary-row__act">${escapeHtml(it.text)}</span>`;
       itinTimeline.appendChild(row);
+    });
+  }
+
+  // Update Accommodations
+  const accList = $("detailPackageAccommodations");
+  if (accList) {
+    accList.innerHTML = "";
+    const accommodations = pkg.accommodations || standardAccommodations;
+    accommodations.forEach((acc) => {
+      const li = document.createElement("li");
+      li.textContent = acc;
+      accList.appendChild(li);
+    });
+  }
+
+  // Update Location
+  const locText = $("detailPackageLocationText");
+  if (locText) {
+    locText.textContent = pkg.location || "Spot Snorkeling Bunaken, Nain Island, Siladen Island, Sulawesi Utara.";
+  }
+
+  // Update Policies
+  const polList = $("detailPackagePolicies");
+  if (polList) {
+    polList.innerHTML = "";
+    const policies = pkg.policies || standardPolicies;
+    policies.forEach((pol) => {
+      const li = document.createElement("li");
+      li.textContent = pol;
+      polList.appendChild(li);
     });
   }
 
@@ -1307,6 +1353,12 @@ function openEditPackageModal(state, idx) {
   const nameInput = $("editPackageName");
   const descInput = $("editPackageDesc");
   const facInput = $("editPackageFacilities");
+  
+  const excInput = $("editPackageExclusions");
+  const itinInput = $("editPackageItinerary");
+  const accInput = $("editPackageAccommodations");
+  const locInput = $("editPackageLocation");
+  const polInput = $("editPackagePolicies");
 
   if (idx === -1) {
     if (title) title.textContent = "Tambah Paket Wisata Baru";
@@ -1314,6 +1366,14 @@ function openEditPackageModal(state, idx) {
     if (nameInput) nameInput.value = "";
     if (descInput) descInput.value = "";
     if (facInput) facInput.value = "";
+    if (excInput) excInput.value = standardExclusions.join("\n");
+    if (itinInput) {
+      const defaultItin = state.content.itinerary || [];
+      itinInput.value = defaultItin.map(it => `${it.time} - ${it.text}`).join("\n");
+    }
+    if (accInput) accInput.value = standardAccommodations.join("\n");
+    if (locInput) locInput.value = "Spot Snorkeling Bunaken, Nain Island, Siladen Island, Sulawesi Utara.";
+    if (polInput) polInput.value = standardPolicies.join("\n");
   } else {
     const pkg = state.content.packages[idx];
     if (!pkg) return;
@@ -1322,6 +1382,14 @@ function openEditPackageModal(state, idx) {
     if (nameInput) nameInput.value = pkg.name || "";
     if (descInput) descInput.value = pkg.desc || "";
     if (facInput) facInput.value = (pkg.facilities || []).join("\n");
+    if (excInput) excInput.value = (pkg.exclusions !== undefined ? pkg.exclusions : standardExclusions).join("\n");
+    if (itinInput) {
+      const itinItems = pkg.itinerary || state.content.itinerary || [];
+      itinInput.value = itinItems.map(it => `${it.time} - ${it.text}`).join("\n");
+    }
+    if (accInput) accInput.value = (pkg.accommodations !== undefined ? pkg.accommodations : standardAccommodations).join("\n");
+    if (locInput) locInput.value = pkg.location !== undefined ? pkg.location : "Spot Snorkeling Bunaken, Nain Island, Siladen Island, Sulawesi Utara.";
+    if (polInput) polInput.value = (pkg.policies !== undefined ? pkg.policies : standardPolicies).join("\n");
   }
   
   modal.showModal();
@@ -1335,18 +1403,56 @@ function saveEditPackageModal(state) {
   const nameVal = $("editPackageName")?.value || "";
   const descVal = $("editPackageDesc")?.value || "";
   const facVal = $("editPackageFacilities")?.value || "";
+  
+  const excVal = $("editPackageExclusions")?.value || "";
+  const itinVal = $("editPackageItinerary")?.value || "";
+  const accVal = $("editPackageAccommodations")?.value || "";
+  const locVal = $("editPackageLocation")?.value || "";
+  const polVal = $("editPackagePolicies")?.value || "";
 
   const facilities = facVal
     .split("\n")
     .map((s) => s.trim())
     .filter(Boolean);
 
+  const exclusions = excVal
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const accommodations = accVal
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const policies = polVal
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  // Parse jam - kegiatan
+  const itineraryLines = itinVal
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const itinerary = itineraryLines.map((line) => {
+    const parts = line.split(/-(.+)/);
+    const time = parts[0] ? parts[0].trim() : "";
+    const text = parts[1] ? parts[1].trim() : line;
+    return { time, text };
+  });
+
   const idx = parseInt(idxVal, 10);
   if (idx === -1) {
     state.content.packages.push({
       name: nameVal,
       desc: descVal,
-      facilities: facilities
+      facilities: facilities,
+      exclusions: exclusions,
+      itinerary: itinerary,
+      accommodations: accommodations,
+      location: locVal,
+      policies: policies
     });
     state.activePackageIdx = state.content.packages.length - 1;
   } else {
@@ -1355,6 +1461,11 @@ function saveEditPackageModal(state) {
       pkg.name = nameVal;
       pkg.desc = descVal;
       pkg.facilities = facilities;
+      pkg.exclusions = exclusions;
+      pkg.itinerary = itinerary;
+      pkg.accommodations = accommodations;
+      pkg.location = locVal;
+      pkg.policies = policies;
     }
   }
 

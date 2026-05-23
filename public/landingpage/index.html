@@ -392,20 +392,59 @@
         <div class="modal__ph" id="pkgModalPh" style="min-height: 280px; position: relative;">
           <img id="pkgModalImg" src="" alt="Banner Paket" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.style.display='none'" />
         </div>
-        <div class="modal__body" style="display: flex; flex-direction: column; justify-content: space-between; padding: 24px;">
-          <div>
-            <h3 id="pkgModalTitle" style="font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Judul Paket</h3>
-            <p class="muted" id="pkgModalDesc" style="font-size: 13px; line-height: 1.6; color: var(--muted); margin-bottom: 16px;">Deskripsi Paket</p>
+        <div class="modal__body" style="display: flex; flex-direction: column; justify-content: space-between; padding: 24px; max-height: 85vh;">
+          <div style="overflow-y: auto; padding-right: 8px; flex: 1; margin-bottom: 16px;">
+            <h3 id="pkgModalTitle" style="font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Judul Paket</h3>
+            <p class="muted" id="pkgModalDesc" style="font-size: 13.5px; line-height: 1.6; color: var(--muted); margin-bottom: 20px;">Deskripsi Paket</p>
             
-            <div style="margin-top: 14px;">
-              <h4 style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px;">Fasilitas Termasuk:</h4>
-              <ul id="pkgModalFacilities" class="list list--compact" style="font-size: 13px; max-height: 180px; overflow-y: auto; padding-left: 20px; line-height: 1.6;">
+            <!-- Inclusions & Exclusions columns -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+              <div>
+                <h4 style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px;">Fasilitas Termasuk:</h4>
+                <ul id="pkgModalFacilities" class="list list--compact" style="font-size: 12.5px; padding-left: 20px; line-height: 1.6; color: var(--text);">
+                  <!-- Dynamically populated -->
+                </ul>
+              </div>
+              <div>
+                <h4 style="font-size: 14px; font-weight: 700; color: var(--coral); margin-bottom: 8px;">Tidak Termasuk:</h4>
+                <ul id="pkgModalExclusions" class="list list--compact" style="font-size: 12.5px; padding-left: 20px; line-height: 1.6; color: var(--text);">
+                  <!-- Dynamically populated -->
+                </ul>
+              </div>
+            </div>
+
+            <!-- Itinerary Timeline -->
+            <div style="margin-bottom: 20px; border-top: 1px solid rgba(6, 40, 61, 0.08); padding-top: 16px;">
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px;">Rencana Perjalanan (Itinerary):</h4>
+              <div id="pkgModalItinerary" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Dynamically populated timeline -->
+              </div>
+            </div>
+
+            <!-- Accommodations -->
+            <div style="margin-bottom: 20px; border-top: 1px solid rgba(6, 40, 61, 0.08); padding-top: 16px;">
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px;">Akomodasi Wisata:</h4>
+              <ul id="pkgModalAccommodations" class="list list--compact" style="font-size: 12.5px; padding-left: 20px; line-height: 1.6; color: var(--text);">
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <!-- Location -->
+            <div style="margin-bottom: 20px; border-top: 1px solid rgba(6, 40, 61, 0.08); padding-top: 16px;">
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px;">Lokasi & Rute:</h4>
+              <p id="pkgModalLocation" style="font-size: 12.5px; line-height: 1.6; color: var(--muted); margin: 0;">Spot snorkeling...</p>
+            </div>
+
+            <!-- Policies -->
+            <div style="margin-bottom: 10px; border-top: 1px solid rgba(6, 40, 61, 0.08); padding-top: 16px;">
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px;">Ketentuan & Kebijakan:</h4>
+              <ul id="pkgModalPolicies" class="list list--compact" style="font-size: 12.5px; padding-left: 20px; line-height: 1.6; color: var(--text);">
                 <!-- Dynamically populated -->
               </ul>
             </div>
           </div>
           
-          <div class="modal__actions" style="margin-top: 20px; border-top: 1px solid rgba(6, 40, 61, 0.1); padding-top: 14px;">
+          <div class="modal__actions" style="border-top: 1px solid rgba(6, 40, 61, 0.1); padding-top: 14px; display: flex; gap: 12px; width: 100%;">
             <button class="btn btn--ghost" id="closePkgModal" type="button" style="flex: 1;">Tutup</button>
             <button class="btn btn--primary" id="pkgModalBookBtn" type="button" style="flex: 1;">Booking Sekarang</button>
           </div>

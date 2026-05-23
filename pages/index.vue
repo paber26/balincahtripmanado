@@ -88,6 +88,29 @@ const destinationImages = [
   "/gotur/hero-1-1-image.jpg",
 ];
 
+const standardExclusions = [
+  "Pengeluaran pribadi selama trip",
+  "Penerbangan / Transportasi ke meeting point Manado",
+  "Tips untuk tour guide / crew boat (sukarela)",
+  "Asuransi perjalanan (opsional)",
+  "Peralatan diving tambahan di luar paket snorkeling"
+];
+
+const standardAccommodations = [
+  "Dermaga penyeberangan Marina Plaza Manado",
+  "Fasilitas peristirahatan di Pantai Liang Bunaken",
+  "Sewa gazebo pantai (opsional)",
+  "Kamar bilas / kamar ganti setelah snorkeling/diving"
+];
+
+const standardPolicies = [
+  "DP (Down Payment) minimal 30% didepositkan saat melakukan booking.",
+  "Pelunasan dilakukan paling lambat pada hari H sebelum kapal berangkat.",
+  "Pembatalan trip oleh peserta sebelum H-3 dapat mengembalikan DP sebesar 50%.",
+  "Pembatalan trip oleh pihak Balincah Trip akibat cuaca buruk (Force Majeure) akan direfund penuh (100%).",
+  "Anak di bawah 3 tahun bebas biaya (gratis)."
+];
+
 useHead(() => ({
   title: content.value.siteName || "Balincah Trip Manado",
   meta: [
@@ -540,7 +563,7 @@ useHead(() => ({
 
     <!-- Detail Paket Modal (Vue Dialog) -->
     <div v-if="activeDetailPackage" class="fixed inset-0 z-50 flex items-center justify-center bg-navy/40 p-4 backdrop-blur-sm" @click.self="activeDetailPackage = null">
-      <div class="w-full max-w-lg overflow-hidden rounded-3xl border border-navy/10 bg-white shadow-xl">
+      <div class="w-full max-w-xl overflow-hidden rounded-3xl border border-navy/10 bg-white shadow-xl">
         <!-- Banner -->
         <div class="relative h-48 w-full">
           <img class="h-full w-full object-cover" :src="heroImages[content.packages.indexOf(activeDetailPackage) % heroImages.length].src" :alt="activeDetailPackage.name" />
@@ -550,18 +573,66 @@ useHead(() => ({
           </button>
         </div>
         
-        <div class="p-6">
-          <h3 class="font-display text-[20px] font-extrabold text-navy">{{ activeDetailPackage.name }}</h3>
-          <p class="mt-2 text-[13px] leading-6 text-black/65">{{ activeDetailPackage.desc }}</p>
-          
-          <div class="mt-4">
-            <h4 class="text-[13px] font-extrabold text-navy">Fasilitas Termasuk:</h4>
-            <ul class="mt-2 list-disc pl-5 text-[13px] leading-6 text-black/70 max-h-[160px] overflow-y-auto">
-              <li v-for="(f, idx) in activeDetailPackage.facilities || []" :key="idx">{{ f }}</li>
-            </ul>
+        <div class="flex flex-col justify-between p-6 max-h-[70vh]">
+          <div class="overflow-y-auto pr-2 flex-1 mb-4 space-y-5">
+            <div>
+              <h3 class="font-display text-[22px] font-extrabold text-navy leading-snug">{{ activeDetailPackage.name }}</h3>
+              <p class="mt-2 text-[13.5px] leading-6 text-black/65">{{ activeDetailPackage.desc }}</p>
+            </div>
+            
+            <!-- Inclusions & Exclusions columns -->
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <h4 class="text-[13.5px] font-extrabold text-navy">Fasilitas Termasuk:</h4>
+                <ul class="mt-2 list-disc pl-5 text-[12.5px] leading-6 text-black/70">
+                  <li v-for="(f, idx) in activeDetailPackage.facilities || []" :key="idx">{{ f }}</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="text-[13.5px] font-extrabold text-coral">Tidak Termasuk:</h4>
+                <ul class="mt-2 list-disc pl-5 text-[12.5px] leading-6 text-black/70">
+                  <li v-for="(exc, idx) in activeDetailPackage.exclusions || standardExclusions" :key="idx">{{ exc }}</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Itinerary Timeline -->
+            <div class="border-t border-navy/10 pt-4">
+              <h4 class="text-[13.5px] font-extrabold text-navy mb-2">Rencana Perjalanan (Itinerary):</h4>
+              <div class="space-y-2">
+                <div v-for="(it, idx) in activeDetailPackage.itinerary || content.itinerary || []" :key="idx" class="flex gap-2 text-[13px] leading-relaxed">
+                  <span class="font-bold text-ocean min-w-[50px]">{{ it.time }}</span>
+                  <span class="text-black/70">{{ it.text }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accommodations -->
+            <div class="border-t border-navy/10 pt-4">
+              <h4 class="text-[13.5px] font-extrabold text-navy">Akomodasi Wisata:</h4>
+              <ul class="mt-2 list-disc pl-5 text-[12.5px] leading-6 text-black/70">
+                <li v-for="(acc, idx) in activeDetailPackage.accommodations || standardAccommodations" :key="idx">{{ acc }}</li>
+              </ul>
+            </div>
+
+            <!-- Location -->
+            <div class="border-t border-navy/10 pt-4">
+              <h4 class="text-[13.5px] font-extrabold text-navy">Lokasi & Rute:</h4>
+              <p class="mt-1 text-[12.5px] leading-relaxed text-black/65">
+                {{ activeDetailPackage.location || 'Spot Snorkeling Bunaken, Nain Island, Siladen Island, Sulawesi Utara.' }}
+              </p>
+            </div>
+
+            <!-- Policies -->
+            <div class="border-t border-navy/10 pt-4">
+              <h4 class="text-[13.5px] font-extrabold text-navy">Ketentuan & Kebijakan:</h4>
+              <ul class="mt-2 list-disc pl-5 text-[12.5px] leading-6 text-black/70">
+                <li v-for="(pol, idx) in activeDetailPackage.policies || standardPolicies" :key="idx">{{ pol }}</li>
+              </ul>
+            </div>
           </div>
           
-          <div class="mt-6 flex justify-end gap-3 border-t border-navy/10 pt-4">
+          <div class="flex justify-end gap-3 border-t border-navy/10 pt-4">
             <button class="rounded-full border border-navy/10 bg-white px-4 py-2 text-[13px] font-extrabold text-black/70 hover:bg-sand" @click="activeDetailPackage = null">
               Tutup
             </button>
