@@ -587,6 +587,27 @@
       </div>
     </dialog>
 
+    <!-- Gallery Picker Modal -->
+    <dialog class="modal modal--wide" id="galleryPickerModal" aria-label="Pilih Foto dari Galeri">
+      <div class="modal__inner">
+        <div class="modal__head">
+          <h3><i data-lucide="images" style="width:20px;height:20px;vertical-align:middle;margin-right:8px;"></i> Pilih Foto dari Galeri</h3>
+          <button class="btn btn--ghost" id="galleryPickerClose" type="button">Tutup</button>
+        </div>
+        <p class="muted" style="margin-bottom:4px;">Klik satu atau beberapa foto untuk memilihnya, lalu klik <strong>Tambahkan ke Paket</strong>.</p>
+        <div class="gallery-picker-grid" id="galleryPickerGrid">
+          <!-- Populated dynamically -->
+        </div>
+        <div class="row row--end mt-4">
+          <button class="btn btn--ghost" id="galleryPickerCancelBtn" type="button">Batal</button>
+          <button class="btn btn--primary" id="galleryPickerConfirmBtn" type="button" disabled>
+            <i data-lucide="plus"></i> Tambahkan ke Paket
+          </button>
+        </div>
+      </div>
+    </dialog>
+
     <script src="/admin/admin.js"></script>
+
   </body>
 </html>

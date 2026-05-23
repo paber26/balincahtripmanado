@@ -1452,12 +1452,21 @@ function renderDetailGalleryEditor(state) {
   if (!galGrid) return;
   galGrid.innerHTML = "";
 
-  const items = state.content.gallery || [];
+  const pkgs = state.content.packages || [];
+  const pkg = pkgs[state.activePackageIdx] || pkgs[0];
+  if (!pkg) {
+    galGrid.innerHTML = `<div class="gallery-edit-empty"><span>Belum ada paket.</span></div>`;
+    return;
+  }
+  // Ensure pkg.gallery exists
+  if (!Array.isArray(pkg.gallery)) pkg.gallery = [];
+
+  const items = pkg.gallery;
 
   if (items.length === 0) {
     const empty = document.createElement("div");
     empty.className = "gallery-edit-empty";
-    empty.innerHTML = `<i data-lucide="image-off"></i><span>Belum ada foto galeri. Klik "Tambah Foto" untuk mulai.</span>`;
+    empty.innerHTML = `<i data-lucide="images"></i><span>Belum ada foto untuk paket ini.<br>Klik <strong>Tambah Foto</strong> untuk memilih dari galeri.</span>`;
     galGrid.appendChild(empty);
     if (typeof lucide !== "undefined") lucide.createIcons({ nameAttr: "data-lucide", attrs: { class: "icon" }, nodeList: galGrid.querySelectorAll("[data-lucide]") });
     return;
@@ -1467,111 +1476,50 @@ function renderDetailGalleryEditor(state) {
     const card = document.createElement("div");
     card.className = "gallery-edit-card";
 
-    // Image area
+    // Image area (display only — photo source is managed in the Galeri tab)
     const imgArea = document.createElement("div");
     imgArea.className = "gallery-edit-card__img";
-    
-    const renderImgArea = () => {
-      imgArea.innerHTML = "";
-      if (g.image) {
-        const img = document.createElement("img");
-        img.src = resolveAssetPath(g.image);
-        img.alt = g.title || "";
-        imgArea.appendChild(img);
-      } else {
-        imgArea.innerHTML = `<div class="gallery-edit-card__no-img"><i data-lucide="image"></i></div>`;
-      }
 
-      const fileInput = document.createElement("input");
-      fileInput.type = "file";
-      fileInput.accept = "image/*";
-      fileInput.className = "is-hidden";
-
-      const uploadOverlay = document.createElement("div");
-      uploadOverlay.className = "gallery-edit-card__upload-overlay";
-      uploadOverlay.innerHTML = `<i data-lucide="upload-cloud"></i><span>${g.image ? "Ganti Foto" : "Upload Foto"}</span>`;
-      uploadOverlay.addEventListener("click", () => fileInput.click());
-
-      const statusBadge = document.createElement("span");
-      statusBadge.className = "gallery-edit-card__status is-hidden";
-
-      fileInput.addEventListener("change", async () => {
-        if (!fileInput.files || fileInput.files.length === 0) return;
-        const formData = new FormData();
-        formData.append("file", fileInput.files[0]);
-
-        statusBadge.textContent = "Mengunggah…";
-        statusBadge.className = "gallery-edit-card__status gallery-edit-card__status--loading";
-
-        try {
-          const res = await fetch("/api/upload", { method: "POST", body: formData });
-          const result = await res.json();
-          if (result.success && result.url) {
-            g.image = result.url;
-            markDirty(state);
-            renderDetailGalleryEditor(state);
-            renderGalleryEditor(state);
-          } else {
-            statusBadge.textContent = "Gagal unggah";
-            statusBadge.className = "gallery-edit-card__status gallery-edit-card__status--error";
-          }
-        } catch {
-          statusBadge.textContent = "Koneksi gagal";
-          statusBadge.className = "gallery-edit-card__status gallery-edit-card__status--error";
-        }
-      });
-
-      imgArea.appendChild(uploadOverlay);
-      imgArea.appendChild(fileInput);
-      imgArea.appendChild(statusBadge);
-
-      if (typeof lucide !== "undefined") {
-        lucide.createIcons({ nameAttr: "data-lucide", attrs: { class: "icon" }, nodeList: imgArea.querySelectorAll("[data-lucide]") });
-      }
-    };
-    renderImgArea();
+    if (g.image) {
+      const img = document.createElement("img");
+      img.src = resolveAssetPath(g.image);
+      img.alt = g.title || "";
+      imgArea.appendChild(img);
+    } else {
+      imgArea.innerHTML = `<div class="gallery-edit-card__no-img"><i data-lucide="image"></i></div>`;
+    }
 
     // Info area
     const info = document.createElement("div");
     info.className = "gallery-edit-card__info";
 
-    const titleInput = document.createElement("input");
-    titleInput.className = "gallery-edit-card__title-input";
-    titleInput.placeholder = "Judul foto";
-    titleInput.value = g.title || "";
-    titleInput.addEventListener("input", () => {
-      g.title = titleInput.value;
-      markDirty(state);
-    });
+    const titleEl = document.createElement("div");
+    titleEl.className = "gallery-edit-card__title-input";
+    titleEl.style.cssText = "font-weight:700;font-size:13px;padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);";
+    titleEl.textContent = g.title || `Foto #${idx + 1}`;
 
-    const descInput = document.createElement("textarea");
-    descInput.className = "gallery-edit-card__desc-input";
-    descInput.placeholder = "Deskripsi (opsional)";
-    descInput.rows = 2;
-    descInput.value = g.desc || "";
-    descInput.addEventListener("input", () => {
-      g.desc = descInput.value;
-      markDirty(state);
-    });
+    if (g.desc) {
+      const descEl = document.createElement("div");
+      descEl.style.cssText = "font-size:12px;color:var(--muted);padding:4px 10px;";
+      descEl.textContent = g.desc;
+      info.appendChild(titleEl);
+      info.appendChild(descEl);
+    } else {
+      info.appendChild(titleEl);
+    }
 
     const delBtn = document.createElement("button");
     delBtn.type = "button";
     delBtn.className = "gallery-edit-card__del";
-    delBtn.title = "Hapus foto ini";
+    delBtn.title = "Hapus dari paket ini";
     delBtn.innerHTML = `<i data-lucide="trash-2"></i>`;
     delBtn.addEventListener("click", () => {
-      if (confirm(`Hapus foto "${g.title || "ini"}"?`)) {
-        state.content.gallery.splice(idx, 1);
-        markDirty(state);
-        renderDetailGalleryEditor(state);
-        renderGalleryEditor(state);
-      }
+      pkg.gallery.splice(idx, 1);
+      markDirty(state);
+      renderDetailGalleryEditor(state);
     });
 
-    info.appendChild(titleInput);
-    info.appendChild(descInput);
     info.appendChild(delBtn);
-
     card.appendChild(imgArea);
     card.appendChild(info);
     galGrid.appendChild(card);
@@ -1642,13 +1590,9 @@ function hookDetailPaket(state) {
     openEditPackageModal(state, -1);
   });
 
-  // Gallery sub-tab Add Photo Button
+  // Gallery sub-tab Add Photo Button → open picker from global gallery
   $("addGalleryItemBtn")?.addEventListener("click", () => {
-    state.content.gallery.push({ title: "Foto Baru", desc: "", image: "" });
-    markDirty(state);
-    renderDetailGalleryEditor(state);
-    // Also sync the Galeri tab
-    renderGalleryEditor(state);
+    openGalleryPickerModal(state);
   });
 
   // Form Submit
@@ -1667,4 +1611,129 @@ function hookDetailPaket(state) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", () => {
+  init();
+  hookGalleryPicker();
+});
+
+// =============================================
+// Gallery Picker Modal
+// =============================================
+
+let _galleryPickerState = null;
+
+function openGalleryPickerModal(state) {
+  _galleryPickerState = state;
+  const modal = $("galleryPickerModal");
+  const grid = $("galleryPickerGrid");
+  if (!modal || !grid) return;
+
+  const globalGallery = state.content.gallery || [];
+
+  // Reset selection
+  grid.innerHTML = "";
+  const selectedSet = new Set();
+
+  if (globalGallery.length === 0) {
+    grid.innerHTML = `<div class="gallery-edit-empty" style="grid-column:1/-1"><i data-lucide="image-off"></i><span>Belum ada foto di Galeri.<br>Tambahkan foto di menu <strong>Galeri</strong> terlebih dahulu.</span></div>`;
+    if (typeof lucide !== "undefined") lucide.createIcons({ nameAttr: "data-lucide", attrs: { class: "icon" }, nodeList: grid.querySelectorAll("[data-lucide]") });
+    modal.showModal();
+    return;
+  }
+
+  // Get current package gallery to mark already-added photos
+  const pkgs = state.content.packages || [];
+  const pkg = pkgs[state.activePackageIdx] || pkgs[0];
+  if (!pkg) { modal.showModal(); return; }
+  if (!Array.isArray(pkg.gallery)) pkg.gallery = [];
+  const alreadyAdded = new Set(pkg.gallery.map(p => p.image + "||" + p.title));
+
+  globalGallery.forEach((g, idx) => {
+    const key = (g.image || "") + "||" + (g.title || "");
+    const isAdded = alreadyAdded.has(key);
+
+    const item = document.createElement("div");
+    item.className = "gallery-picker-item" + (isAdded ? " is-added" : "");
+    item.title = isAdded ? "Sudah ditambahkan ke paket ini" : (g.title || "");
+
+    if (g.image) {
+      const img = document.createElement("img");
+      img.src = resolveAssetPath(g.image);
+      img.alt = g.title || "";
+      item.appendChild(img);
+    } else {
+      const noImg = document.createElement("div");
+      noImg.className = "gallery-picker-item__no-img";
+      noImg.innerHTML = `<i data-lucide="image"></i>`;
+      item.appendChild(noImg);
+    }
+
+    const label = document.createElement("div");
+    label.className = "gallery-picker-item__label";
+    label.textContent = g.title || `Foto #${idx + 1}`;
+    item.appendChild(label);
+
+    const checkMark = document.createElement("div");
+    checkMark.className = "gallery-picker-item__check";
+    checkMark.innerHTML = `<i data-lucide="check"></i>`;
+    item.appendChild(checkMark);
+
+    if (isAdded) {
+      const addedBadge = document.createElement("div");
+      addedBadge.className = "gallery-picker-item__added-badge";
+      addedBadge.textContent = "Sudah ada";
+      item.appendChild(addedBadge);
+    } else {
+      item.addEventListener("click", () => {
+        if (selectedSet.has(idx)) {
+          selectedSet.delete(idx);
+          item.classList.remove("is-selected");
+        } else {
+          selectedSet.add(idx);
+          item.classList.add("is-selected");
+        }
+        const confirmBtn = $("galleryPickerConfirmBtn");
+        if (confirmBtn) confirmBtn.disabled = selectedSet.size === 0;
+      });
+    }
+
+    grid.appendChild(item);
+  });
+
+  // Store selection ref on modal for confirm button
+  modal._selectedSet = selectedSet;
+  modal._globalGallery = globalGallery;
+  modal._pkg = pkg;
+
+  const confirmBtn = $("galleryPickerConfirmBtn");
+  if (confirmBtn) confirmBtn.disabled = true;
+
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons({ nameAttr: "data-lucide", attrs: { class: "icon" }, nodeList: grid.querySelectorAll("[data-lucide]") });
+  }
+
+  modal.showModal();
+}
+
+function hookGalleryPicker() {
+  $("galleryPickerClose")?.addEventListener("click", () => $("galleryPickerModal")?.close());
+  $("galleryPickerCancelBtn")?.addEventListener("click", () => $("galleryPickerModal")?.close());
+
+  $("galleryPickerConfirmBtn")?.addEventListener("click", () => {
+    const modal = $("galleryPickerModal");
+    if (!modal || !_galleryPickerState) return;
+
+    const { _selectedSet, _globalGallery, _pkg } = modal;
+    if (!_selectedSet || !_globalGallery || !_pkg) return;
+
+    _selectedSet.forEach((idx) => {
+      const g = _globalGallery[idx];
+      if (!g) return;
+      _pkg.gallery.push({ title: g.title || "", desc: g.desc || "", image: g.image || "" });
+    });
+
+    markDirty(_galleryPickerState);
+    renderDetailGalleryEditor(_galleryPickerState);
+    modal.close();
+  });
+}
