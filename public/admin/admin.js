@@ -366,57 +366,103 @@ function iconButton(label, klass) {
 }
 
 function renderPackageEditor(state) {
-  renderList(state, "packagesList", state.content.packages, (pkg, idx) => {
-    const { wrap, actions } = createItemShell(pkg.name || `Paket #${idx + 1}`);
-    const titleEl = wrap.querySelector(".item__title");
+  const container = $("packagesList");
+  if (!container) return;
+  container.innerHTML = "";
+  
+  const pkgs = state.content.packages || [];
+  const banners = [
+    "/gotur/hero-1-1-image.jpg",
+    "/gotur/hero-1-2-image.jpg",
+    "/gotur/hero-1-3-image.jpg",
+  ];
 
-    const viewDet = iconButton("Lihat Detail", "iconBtn--info");
-    viewDet.addEventListener("click", () => {
+  pkgs.forEach((pkg, idx) => {
+    const card = document.createElement("div");
+    card.className = "package-card";
+    
+    // Banner image
+    const bannerSrc = resolveAssetPath(banners[idx % banners.length]);
+    const bannerHtml = `
+      <div class="package-card__banner">
+        <img src="${bannerSrc}" alt="${escapeHtml(pkg.name)}" onerror="this.src='/gotur/hero-1-1-image.jpg'" />
+      </div>
+    `;
+    
+    // Title
+    const titleHtml = `<h4 class="package-card__title">${escapeHtml(pkg.name || `Paket #${idx + 1}`)}</h4>`;
+    
+    // Description
+    const descHtml = `<p class="package-card__desc">${escapeHtml(pkg.desc || "Belum ada deskripsi.")}</p>`;
+    
+    // Facilities Badges
+    const facilities = pkg.facilities || [];
+    let badgesHtml = '<div class="package-card__facilities">';
+    if (facilities.length === 0) {
+      badgesHtml += `<span class="facility-badge" style="background-color: #f1f1f1; color: #888;">Tanpa Fasilitas</span>`;
+    } else {
+      facilities.slice(0, 4).forEach((f) => {
+        badgesHtml += `<span class="facility-badge">${escapeHtml(f)}</span>`;
+      });
+      if (facilities.length > 4) {
+        badgesHtml += `<span class="facility-badge" style="background-color: #f1f1f1; color: #555;">+${facilities.length - 4} Lainnya</span>`;
+      }
+    }
+    badgesHtml += '</div>';
+    
+    // Actions Row
+    const actionsWrapper = document.createElement("div");
+    actionsWrapper.className = "package-card__actions";
+    
+    // View detail button
+    const viewBtn = document.createElement("button");
+    viewBtn.type = "button";
+    viewBtn.className = "btn btn--edit";
+    viewBtn.innerHTML = `<i data-lucide="eye"></i> Detail`;
+    viewBtn.addEventListener("click", () => {
       state.activePackageIdx = idx;
       navigateTab(state, "detail-paket");
     });
-    actions.appendChild(viewDet);
-
-    const del = iconButton("Hapus", "iconBtn--danger");
-    del.addEventListener("click", () => {
-      state.content.packages.splice(idx, 1);
-      markDirty(state);
-      renderPackageEditor(state);
+    
+    // Edit button
+    const editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.className = "btn";
+    editBtn.innerHTML = `<i data-lucide="edit"></i> Edit`;
+    editBtn.addEventListener("click", () => {
+      openEditPackageModal(state, idx);
     });
-    actions.appendChild(del);
-
-    const grid = document.createElement("div");
-    grid.className = "grid2";
-
-    const name = fieldInput("Nama paket", pkg.name || "", (v) => {
-      pkg.name = v;
-      markDirty(state);
-      if (titleEl) titleEl.textContent = v || `Paket #${idx + 1}`;
-    });
-    const desc = fieldTextarea("Deskripsi", pkg.desc || "", (v) => {
-      pkg.desc = v;
-      markDirty(state);
-    });
-
-    grid.appendChild(name);
-    grid.appendChild(desc);
-
-    const facilities = fieldTextarea(
-      "Fasilitas (1 baris = 1 item)",
-      (pkg.facilities || []).join("\n"),
-      (v) => {
-        pkg.facilities = String(v || "")
-          .split("\n")
-          .map((s) => s.trim())
-          .filter(Boolean);
+    
+    // Delete button
+    const delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "btn btn--delete";
+    delBtn.innerHTML = `<i data-lucide="trash-2"></i>`;
+    delBtn.title = "Hapus";
+    delBtn.addEventListener("click", () => {
+      if (confirm(`Hapus paket "${pkg.name}"?`)) {
+        state.content.packages.splice(idx, 1);
         markDirty(state);
-      },
-    );
-
-    wrap.appendChild(grid);
-    wrap.appendChild(facilities);
-    return wrap;
+        renderPackageEditor(state);
+      }
+    });
+    
+    actionsWrapper.appendChild(viewBtn);
+    actionsWrapper.appendChild(editBtn);
+    actionsWrapper.appendChild(delBtn);
+    
+    card.innerHTML = bannerHtml + titleHtml + descHtml + badgesHtml;
+    card.appendChild(actionsWrapper);
+    container.appendChild(card);
   });
+  
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons({
+      nameAttr: "data-lucide",
+      attrs: { class: "icon" },
+      nodeList: container.querySelectorAll("[data-lucide]")
+    });
+  }
 }
 
 function renderDestinationsEditor(state) {
