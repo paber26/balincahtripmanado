@@ -826,7 +826,24 @@ function hookAddButtons(state) {
 
 function hookNav(state) {
   document.querySelectorAll(".nav__item").forEach((btn) => {
-    btn.addEventListener("click", () => setTab(state, btn.getAttribute("data-tab")));
+    btn.addEventListener("click", () => {
+      const tab = btn.getAttribute("data-tab");
+      if (tab) {
+        setTab(state, tab);
+        if (window.innerWidth <= 991) {
+          document.body.classList.remove("sidebar-open");
+        }
+      }
+    });
+  });
+
+  const sidebarToggle = $("sidebarToggle");
+  sidebarToggle?.addEventListener("click", () => {
+    if (window.innerWidth > 991) {
+      document.body.classList.toggle("sidebar-collapsed");
+    } else {
+      document.body.classList.toggle("sidebar-open");
+    }
   });
 }
 
@@ -942,57 +959,15 @@ function hookActions(state) {
     }
   });
 
-  $("downloadBtn")?.addEventListener("click", () => {
-    downloadJson("content.json", state.content);
-  });
   $("downloadBtn2")?.addEventListener("click", () => {
     downloadJson("content.json", state.content);
   });
-  $("openExportTabBtn")?.addEventListener("click", () => setTab(state, "export"));
   $("openPackagesTabBtn")?.addEventListener("click", () => setTab(state, "paket"));
 
   $("previewLandingBtn")?.addEventListener("click", () => {
     // Preview mode uses localStorage data on landing (implemented on landing side).
     const url = "../landingpage/index.html?preview=1";
     window.open(url, "_blank", "noopener,noreferrer");
-  });
-
-  $("importFile")?.addEventListener("change", async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const text = await file.text();
-    try {
-      const parsed = JSON.parse(text);
-      state.content = { ...defaultContent(), ...parsed };
-      applyContentToForm(state);
-      markDirty(state);
-      alert("Import berhasil. Klik Simpan untuk menyimpan ke browser.");
-    } catch {
-      alert("JSON tidak valid.");
-    }
-    e.target.value = "";
-  });
-
-  $("applyRawBtn")?.addEventListener("click", () => {
-    const raw = $("rawJson")?.value || "";
-    try {
-      const parsed = JSON.parse(raw);
-      state.content = { ...defaultContent(), ...parsed };
-      applyContentToForm(state);
-      markDirty(state);
-      alert("JSON diterapkan. Klik Simpan untuk menyimpan ke browser.");
-    } catch {
-      alert("JSON tidak valid.");
-    }
-  });
-
-  $("resetBtn")?.addEventListener("click", () => {
-    if (!confirm("Reset admin? Ini menghapus konten tersimpan di browser.")) return;
-    localStorage.removeItem(STORAGE_KEY);
-    state.content = defaultContent();
-    applyContentToForm(state);
-    markDirty(state);
-    renderDashboard(state);
   });
 }
 

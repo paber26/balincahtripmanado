@@ -21,9 +21,7 @@
       <div class="topbar__inner">
         <div class="topbar__left">
           <div class="brand">
-            <span class="brand__mark" aria-hidden="true">
-              <i data-lucide="check"></i>
-            </span>
+            <span class="brand__mark" aria-hidden="true"></span>
             <div class="brand__text">
               <div class="brand__name">Balincah</div>
               <div class="brand__tag">Admin Panel</div>
@@ -45,9 +43,7 @@
           <a class="pill-btn hide-mobile" href="../landingpage/index.html" target="_blank" rel="noreferrer">
             <i data-lucide="external-link"></i> Buka Landing
           </a>
-          <button class="pill-btn pill-btn--warn hide-mobile" id="resetBtn" type="button" title="Hapus data local admin">
-            <i data-lucide="rotate-ccw"></i> Reset
-          </button>
+
 
           <!-- Utility Icons -->
           <div class="icon-indicator" title="Notifikasi">
@@ -190,13 +186,6 @@
                 <i data-lucide="help-circle"></i>
                 <span>FAQ</span>
               </button>
-
-              <div class="nav-section-title">Data & Backup</div>
-
-              <button class="nav__item" type="button" data-tab="export">
-                <i data-lucide="database"></i>
-                <span>Export / Import</span>
-              </button>
             </nav>
 
             <div class="sidebar__footer">
@@ -209,15 +198,7 @@
 
           <!-- Right Content Panel -->
           <section class="panel">
-            <!-- Notice Section -->
-            <div class="notice mb-4">
-              <div class="notice__inner">
-                <i data-lucide="info" class="notice__icon"></i>
-                <div>
-                  <strong>Catatan Keamanan:</strong> Data tersimpan di browser (localStorage) dan bisa diekspor menjadi JSON. Ganti file <code>content/content.json</code> untuk update permanen.
-                </div>
-              </div>
-            </div>
+
 
             <div class="dashboard-bread">
               <div class="dashboard-bread__left">
@@ -254,9 +235,7 @@
                     <button class="btn btn--primary" id="downloadBtn2" type="button">
                       <i data-lucide="download"></i> Download JSON
                     </button>
-                    <button class="btn btn--ghost" id="openExportTabBtn" type="button">
-                      Buka Export/Import
-                    </button>
+
                     <button class="btn btn--ghost" id="openPackagesTabBtn" type="button">
                       Kelola Paket
                     </button>
@@ -555,37 +534,7 @@
               </div>
             </div>
 
-            <!-- Export/Import Tab -->
-            <div class="tab is-hidden" id="tab-export">
-              <div class="card">
-                <h3>Export / Import Konten</h3>
-                <p class="muted">
-                  Export untuk simpan ke file JSON. Import untuk memuat JSON yang sudah kamu backup.
-                </p>
-                <p class="muted small mb-4">
-                  Publish flow: unduh <code>content.json</code> lalu ganti file di <code>content/content.json</code> repo Anda.
-                </p>
-                <div class="row">
-                  <button class="btn btn--primary" id="downloadBtn" type="button">
-                    <i data-lucide="download"></i> Download JSON
-                  </button>
-                  <label class="btn btn--ghost cursor-pointer" for="importFile">
-                    <i data-lucide="upload"></i> Import JSON
-                  </label>
-                  <input id="importFile" type="file" accept="application/json" hidden />
-                </div>
-                <div class="card card--sub mt-4">
-                  <h4>Raw JSON Editor</h4>
-                  <textarea id="rawJson" rows="14" spellcheck="false" class="textarea-mono"></textarea>
-                  <div class="row mt-2">
-                    <button class="btn btn--ghost" id="applyRawBtn" type="button">
-                      Terapkan Raw JSON
-                    </button>
-                    <div class="muted small">Gunakan ini jika ingin paste JSON manual.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
 
           </section>
         </div>
