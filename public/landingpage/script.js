@@ -2,6 +2,7 @@ const DEFAULT_WHATSAPP_NUMBER_E164 = "6281245474575";
 const DEFAULT_INSTAGRAM_HANDLE = "balincahtripmanado";
 const ADMIN_STORAGE_KEY = "balincah_admin_content_v1";
 const CONTENT_URL = "../api/content";
+let currentContent = null;
 
 function encodeWhatsAppMessage(message) {
   return encodeURIComponent(message.trim());
@@ -88,6 +89,7 @@ function formatIndoPhoneFromE164(e164) {
 
 function renderLandingContent(content) {
   if (!content) return;
+  currentContent = content;
 
   // Brand
   const siteName = String(content.siteName || "Balincah Trip Manado");
@@ -126,17 +128,25 @@ function renderLandingContent(content) {
   // Packages
   if (Array.isArray(content.packages)) {
     const cards = content.packages
-      .map((p) => {
+      .map((p, idx) => {
         const name = escapeHtml(p.name || "Paket");
         const desc = escapeHtml(p.desc || "");
-        const facilities = Array.isArray(p.facilities) ? p.facilities.map((f) => `<li>${escapeHtml(f)}</li>`).join("") : "";
+        const facilities = Array.isArray(p.facilities) ? p.facilities.slice(0, 4).map((f) => `<li>${escapeHtml(f)}</li>`).join("") : "";
         const chips = [
           `<span class="chip">Bunaken</span>`,
           name.toLowerCase().includes("3 pulau") ? `<span class="chip">Island Hopping</span>` : `<span class="chip">One Day Trip</span>`,
         ].join("");
+        const banners = [
+          "/gotur/hero-1-1-image.jpg",
+          "/gotur/hero-1-2-image.jpg",
+          "/gotur/hero-1-3-image.jpg",
+        ];
+        const bannerSrc = banners[idx % banners.length];
         return `
           <article class="pkg">
-            <div class="tourThumb" aria-hidden="true"></div>
+            <div class="tourThumb" aria-hidden="true">
+              <img src="${bannerSrc}" alt="${name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'" />
+            </div>
             <div class="pkg__top">
               <h3>${name}</h3>
               <p class="muted">${desc}</p>
@@ -145,7 +155,7 @@ function renderLandingContent(content) {
             <ul class="list list--compact">${facilities}</ul>
             <div class="pkg__actions">
               <button class="btn btn--primary js-book" type="button" data-paket="${name}">Booking</button>
-              <button class="btn btn--ghost js-scroll" type="button" data-target="#booking">Isi Form</button>
+              <button class="btn btn--ghost js-detail" type="button" data-index="${idx}">Detail</button>
             </div>
           </article>
         `;
@@ -367,6 +377,66 @@ function init() {
       const inDialog =
         rect.top <= e.clientY && e.clientY <= rect.top + rect.height && rect.left <= e.clientX && e.clientX <= rect.left + rect.width;
       if (!inDialog) modal.close();
+    });
+  }
+
+  // Package detail modal
+  const pkgModal = document.getElementById("packageDetailModal");
+  const closePkgModal = document.getElementById("closePkgModal");
+  const pkgModalTitle = document.getElementById("pkgModalTitle");
+  const pkgModalDesc = document.getElementById("pkgModalDesc");
+  const pkgModalFacilities = document.getElementById("pkgModalFacilities");
+  const pkgModalImg = document.getElementById("pkgModalImg");
+  const pkgModalBookBtn = document.getElementById("pkgModalBookBtn");
+
+  if (pkgModal && pkgModalTitle && pkgModalDesc && pkgModalFacilities && pkgModalImg) {
+    document.addEventListener("click", (e) => {
+      const detailBtn = e.target.closest(".js-detail");
+      if (!detailBtn) return;
+      
+      const idx = parseInt(detailBtn.getAttribute("data-index"), 10);
+      if (!currentContent || !currentContent.packages) return;
+      const pkg = currentContent.packages[idx];
+      if (!pkg) return;
+
+      const name = pkg.name || "Paket";
+      const desc = pkg.desc || "";
+      const facilities = Array.isArray(pkg.facilities) ? pkg.facilities : [];
+      
+      const banners = [
+        "/gotur/hero-1-1-image.jpg",
+        "/gotur/hero-1-2-image.jpg",
+        "/gotur/hero-1-3-image.jpg",
+      ];
+      const bannerSrc = banners[idx % banners.length];
+
+      pkgModalTitle.textContent = name;
+      pkgModalDesc.textContent = desc;
+      pkgModalImg.src = bannerSrc;
+      
+      pkgModalFacilities.innerHTML = facilities.length > 0 
+        ? facilities.map(f => `<li>${escapeHtml(f)}</li>`).join("")
+        : `<li>Tidak ada detail fasilitas.</li>`;
+        
+      if (pkgModalBookBtn) {
+        pkgModalBookBtn.onclick = () => {
+          pkgModal.close();
+          const select = document.getElementById("paketSelect");
+          if (select) select.value = name;
+          scrollToTarget("#booking");
+        };
+      }
+      
+      pkgModal.showModal();
+    });
+
+    if (closePkgModal) closePkgModal.addEventListener("click", () => pkgModal.close());
+    
+    pkgModal.addEventListener("click", (e) => {
+      const rect = pkgModal.getBoundingClientRect();
+      const inDialog =
+        rect.top <= e.clientY && e.clientY <= rect.top + rect.height && rect.left <= e.clientX && e.clientX <= rect.left + rect.width;
+      if (!inDialog) pkgModal.close();
     });
   }
 

@@ -1119,9 +1119,9 @@ function init() {
     const val = e.target.value.toLowerCase().trim();
     const activeTab = state.activeTab;
     if (activeTab === "paket") {
-      const items = document.querySelectorAll("#packagesList .item");
+      const items = document.querySelectorAll("#packagesList .package-card");
       items.forEach((item) => {
-        const title = item.querySelector(".item__title")?.textContent.toLowerCase() || "";
+        const title = item.querySelector(".package-card__title")?.textContent.toLowerCase() || "";
         item.classList.toggle("is-hidden", !title.includes(val));
       });
     } else if (activeTab === "destinasi") {

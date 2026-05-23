@@ -54,6 +54,15 @@ const form = reactive({
   catatan: "",
 });
 
+const activeDetailPackage = ref(null);
+
+const bookPackage = (pkg) => {
+  form.paket = pkg.name;
+  activeDetailPackage.value = null;
+  const el = document.getElementById("booking");
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+};
+
 watchEffect(() => {
   if (!form.paket) form.paket = content.value.packages?.[0]?.name || "Open Trip Bunaken";
 });
@@ -235,7 +244,10 @@ useHead(() => ({
             >
               <SwiperSlide v-for="(p, i) in content.packages || []" :key="i">
                 <div class="group h-full overflow-hidden rounded-3xl border border-navy/10 bg-white/80 shadow-soft">
-                  <div class="h-40 w-full bg-[radial-gradient(260px_160px_at_40%_30%,rgba(0,174,239,0.45),transparent_62%),radial-gradient(260px_160px_at_70%_60%,rgba(255,212,59,0.22),transparent_62%),linear-gradient(140deg,rgba(6,40,61,0.05),rgba(0,174,239,0.10))]"></div>
+                  <div class="relative h-40 w-full overflow-hidden">
+                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" :src="heroImages[i % heroImages.length].src" :alt="p.name || 'Tour'" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/30 to-transparent"></div>
+                  </div>
                   <div class="p-5">
                     <div class="flex flex-wrap gap-2 text-[12px] font-extrabold text-black/60">
                       <span class="rounded-full border border-navy/10 bg-white px-3 py-1">Bunaken</span>
@@ -250,9 +262,9 @@ useHead(() => ({
                       <a class="inline-flex rounded-full bg-yellow px-4 py-2 text-[13px] font-extrabold text-navy" :href="`${waBase}?text=${buildWaMessage({ paket: p.name })}`" target="_blank" rel="noreferrer">
                         Booking
                       </a>
-                      <a class="inline-flex rounded-full border border-navy/10 bg-white px-4 py-2 text-[13px] font-extrabold text-black/70 hover:bg-sand" href="#booking">
-                        Isi Form
-                      </a>
+                      <button type="button" class="inline-flex rounded-full border border-navy/10 bg-white px-4 py-2 text-[13px] font-extrabold text-black/70 hover:bg-sand" @click="activeDetailPackage = p">
+                        Detail
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -525,6 +537,41 @@ useHead(() => ({
         </div>
       </div>
     </section>
+
+    <!-- Detail Paket Modal (Vue Dialog) -->
+    <div v-if="activeDetailPackage" class="fixed inset-0 z-50 flex items-center justify-center bg-navy/40 p-4 backdrop-blur-sm" @click.self="activeDetailPackage = null">
+      <div class="w-full max-w-lg overflow-hidden rounded-3xl border border-navy/10 bg-white shadow-xl">
+        <!-- Banner -->
+        <div class="relative h-48 w-full">
+          <img class="h-full w-full object-cover" :src="heroImages[content.packages.indexOf(activeDetailPackage) % heroImages.length].src" :alt="activeDetailPackage.name" />
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent"></div>
+          <button class="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 text-navy font-bold hover:bg-white transition-colors" @click="activeDetailPackage = null" aria-label="Tutup">
+            ✕
+          </button>
+        </div>
+        
+        <div class="p-6">
+          <h3 class="font-display text-[20px] font-extrabold text-navy">{{ activeDetailPackage.name }}</h3>
+          <p class="mt-2 text-[13px] leading-6 text-black/65">{{ activeDetailPackage.desc }}</p>
+          
+          <div class="mt-4">
+            <h4 class="text-[13px] font-extrabold text-navy">Fasilitas Termasuk:</h4>
+            <ul class="mt-2 list-disc pl-5 text-[13px] leading-6 text-black/70 max-h-[160px] overflow-y-auto">
+              <li v-for="(f, idx) in activeDetailPackage.facilities || []" :key="idx">{{ f }}</li>
+            </ul>
+          </div>
+          
+          <div class="mt-6 flex justify-end gap-3 border-t border-navy/10 pt-4">
+            <button class="rounded-full border border-navy/10 bg-white px-4 py-2 text-[13px] font-extrabold text-black/70 hover:bg-sand" @click="activeDetailPackage = null">
+              Tutup
+            </button>
+            <button class="rounded-full bg-gradient-to-b from-[#FFE382] to-yellow px-5 py-2 text-[13px] font-extrabold text-navy shadow-md hover:shadow-lg transition-shadow" @click="bookPackage(activeDetailPackage)">
+              Booking Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer class="border-t border-navy/10 py-10">
       <div class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 md:flex-row md:items-start md:justify-between">
