@@ -202,7 +202,7 @@ function getTabFromPath() {
   const segments = normalized.split("/");
   const lastSegment = segments[segments.length - 1];
   
-  const validTabs = ["dashboard", "umum", "paket", "detail-paket", "destinasi", "galeri", "itinerary", "alasan", "testimoni", "faq"];
+  const validTabs = ["dashboard", "umum", "paket", "detail-paket", "destinasi", "galeri", "alasan", "testimoni", "faq"];
   if (validTabs.includes(lastSegment)) {
     return lastSegment;
   }
@@ -246,7 +246,6 @@ function setTab(state, tabKey) {
     "detail-paket": ["Detail Paket", "Tampilan premium detail paket wisata."],
     destinasi: ["Destinasi", "Kelola destinasi unggulan."],
     galeri: ["Galeri", "Kelola item galeri."],
-    itinerary: ["Itinerary", "Kelola jadwal perjalanan."],
     alasan: ["Alasan", "Kelola poin kenapa pilih Balincah."],
     testimoni: ["Testimoni", "Kelola testimonial pelanggan."],
     faq: ["FAQ", "Kelola pertanyaan yang sering diajukan."],
@@ -628,44 +627,7 @@ function renderGalleryEditor(state) {
   });
 }
 
-function renderItineraryEditor(state) {
-  renderList(state, "itineraryList", state.content.itinerary, (it, idx) => {
-    const { wrap, actions } = createItemShell(`${it.time || "--.--"} • ${it.text || `Baris #${idx + 1}`}`);
-    const titleEl = wrap.querySelector(".item__title");
-    const del = iconButton("Hapus", "iconBtn--danger");
-    del.addEventListener("click", () => {
-      state.content.itinerary.splice(idx, 1);
-      markDirty(state);
-      renderItineraryEditor(state);
-    });
-    actions.appendChild(del);
-
-    const updateTitle = () => {
-      if (titleEl) {
-        titleEl.textContent = `${it.time || "--.--"} • ${it.text || `Baris #${idx + 1}`}`;
-      }
-    };
-
-    const grid = document.createElement("div");
-    grid.className = "grid2";
-    grid.appendChild(
-      fieldInput("Jam", it.time || "", (v) => {
-        it.time = v;
-        markDirty(state);
-        updateTitle();
-      }),
-    );
-    grid.appendChild(
-      fieldInput("Aktivitas", it.text || "", (v) => {
-        it.text = v;
-        markDirty(state);
-        updateTitle();
-      }),
-    );
-    wrap.appendChild(grid);
-    return wrap;
-  });
-}
+function renderItineraryEditor(state) {}
 
 function renderReasonsEditor(state) {
   renderList(state, "reasonsList", state.content.reasons, (r, idx) => {
@@ -848,7 +810,6 @@ function applyContentToForm(state) {
   renderPackageEditor(state);
   renderDestinationsEditor(state);
   renderGalleryEditor(state);
-  renderItineraryEditor(state);
   renderReasonsEditor(state);
   renderTestimonialsEditor(state);
   renderFaqEditor(state);
@@ -868,11 +829,6 @@ function hookAddButtons(state) {
     state.content.gallery.push({ title: "Item Galeri", desc: "", image: "" });
     markDirty(state);
     renderGalleryEditor(state);
-  });
-  $("addItineraryBtn")?.addEventListener("click", () => {
-    state.content.itinerary.push({ time: "00.00", text: "Aktivitas" });
-    markDirty(state);
-    renderItineraryEditor(state);
   });
   $("addReasonBtn")?.addEventListener("click", () => {
     state.content.reasons.push("Poin baru");
