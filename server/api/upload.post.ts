@@ -32,16 +32,56 @@ export default defineEventHandler(async (event) => {
   const basename = path.basename(file.filename, extension).replace(/[^a-zA-Z0-9_-]/g, '_');
   const filename = `${basename}-${Date.now()}${extension}`;
 
-  const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+  const supabase = useSupabase();
 
-  // Ensure directory exists
-  await fs.mkdir(uploadsDir, { recursive: true });
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.storage
+        .from('gallery')
+        .upload(filename, file.data, {
+          contentType: file.type || 'image/jpeg',
+          cacheControl: '3600',
+          upsert: false,
+        });
 
-  const filePath = path.join(uploadsDir, filename);
-  await fs.writeFile(filePath, file.data);
+      if (error) {
+        throw new Error(error.message);
+      }
 
-  return {
-    success: true,
-    url: `/uploads/${filename}`,
-  };
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('gallery')
+        .getPublicUrl(filename);
+
+      return {
+        success: true,
+        url: publicUrl,
+        source: 'supabase',
+      };
+    } catch (err: any) {
+      console.error('Failed to upload to Supabase storage. Error:', err.message || err);
+      // Fallback to local storage below
+    }
+  }
+
+  // Local fallback: write to public/uploads/
+  try {
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    await fs.mkdir(uploadsDir, { recursive: true });
+
+    const filePath = path.join(uploadsDir, filename);
+    await fs.writeFile(filePath, file.data);
+
+    return {
+      success: true,
+      url: `/uploads/${filename}`,
+      source: 'local',
+    };
+  } catch (err) {
+    console.error('Failed to write local fallback uploaded file:', err);
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Failed to write uploaded image permanently on both Supabase and local filesystem.',
+    });
+  }
 });

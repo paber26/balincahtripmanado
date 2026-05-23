@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.13.2",
+    "@supabase/supabase-js": "^2.106.1",
     "aos": "^2.3.4",
     "nuxt": "^3.13.2",
     "swiper": "^12.1.4"

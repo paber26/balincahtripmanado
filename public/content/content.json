@@ -18,7 +18,14 @@
       "rating": 4.9,
       "featured": true,
       "image": "/gotur/blog-1-343x241.jpg",
-      "facilities": ["Kapal wisata", "Guide lokal", "Dokumentasi", "Snorkeling", "Kunjungan pulau", "Life jacket"]
+      "facilities": [
+        "Kapal wisata",
+        "Guide lokal",
+        "Dokumentasi",
+        "Snorkeling",
+        "Kunjungan pulau",
+        "Life jacket"
+      ]
     },
     {
       "name": "Private Trip Bunaken",
@@ -30,7 +37,14 @@
       "rating": 4.9,
       "featured": true,
       "image": "/gotur/blog-4-343x241.jpg",
-      "facilities": ["Kapal private", "Jadwal fleksibel", "Guide lokal", "Spot foto terbaik", "Snorkeling", "Dokumentasi"]
+      "facilities": [
+        "Kapal private",
+        "Jadwal fleksibel",
+        "Guide lokal",
+        "Spot foto terbaik",
+        "Snorkeling",
+        "Dokumentasi"
+      ]
     },
     {
       "name": "Boat Charter Bunaken",
@@ -42,7 +56,12 @@
       "rating": 4.8,
       "featured": false,
       "image": "/gotur/blog-5-343x241.jpg",
-      "facilities": ["Kapal sesuai kapasitas", "Rute sesuai kebutuhan", "Waktu fleksibel", "Cocok untuk rombongan"]
+      "facilities": [
+        "Kapal sesuai kapasitas",
+        "Rute sesuai kebutuhan",
+        "Waktu fleksibel",
+        "Cocok untuk rombongan"
+      ]
     },
     {
       "name": "Snorkeling Trip",
@@ -54,7 +73,11 @@
       "rating": 4.9,
       "featured": false,
       "image": "/gotur/blog-7-343x241.jpg",
-      "facilities": ["Spot snorkeling pilihan", "Peralatan snorkeling (sesuai paket)", "Pendampingan guide"]
+      "facilities": [
+        "Spot snorkeling pilihan",
+        "Peralatan snorkeling (sesuai paket)",
+        "Pendampingan guide"
+      ]
     },
     {
       "name": "Diving Experience",
@@ -66,7 +89,11 @@
       "rating": 4.8,
       "featured": false,
       "image": "/gotur/blog-8-343x241.jpg",
-      "facilities": ["Briefing & safety", "Spot diving unggulan", "Cocok untuk pemula & berpengalaman"]
+      "facilities": [
+        "Briefing & safety",
+        "Spot diving unggulan",
+        "Cocok untuk pemula & berpengalaman"
+      ]
     },
     {
       "name": "Trip 3 Pulau (Bunaken - Nain - Siladen)",
@@ -78,35 +105,111 @@
       "rating": 4.9,
       "featured": true,
       "image": "/gotur/blog-9-343x241.jpg",
-      "facilities": ["Island hopping", "Spot pasir putih", "Dokumentasi momen"]
+      "facilities": [
+        "Island hopping",
+        "Spot pasir putih",
+        "Dokumentasi momen"
+      ]
     }
   ],
   "destinations": [
-    { "name": "Bunaken Island", "desc": "Ikon wisata bahari Sulawesi Utara dengan pemandangan laut dan terumbu karang." },
-    { "name": "Nain Island", "desc": "Pulau cantik untuk island hopping, spot foto, dan suasana tenang." },
-    { "name": "Siladen Island", "desc": "Pasir putih dan air jernih — cocok untuk santai setelah snorkeling/dive." },
-    { "name": "Underwater Bunaken", "desc": "Spot underwater yang kaya biota laut—pengalaman visual yang sulit dilupakan." }
+    {
+      "name": "Bunaken Island",
+      "desc": "Ikon wisata bahari Sulawesi Utara dengan pemandangan laut dan terumbu karang."
+    },
+    {
+      "name": "Nain Island",
+      "desc": "Pulau cantik untuk island hopping, spot foto, dan suasana tenang."
+    },
+    {
+      "name": "Siladen Island",
+      "desc": "Pasir putih dan air jernih — cocok untuk santai setelah snorkeling/dive."
+    },
+    {
+      "name": "Underwater Bunaken",
+      "desc": "Spot underwater yang kaya biota laut—pengalaman visual yang sulit dilupakan."
+    }
   ],
   "gallery": [
-    { "title": "Drone View", "desc": "Foto drone perjalanan ke Bunaken.", "image": "/gotur/hero-1-1-image.jpg" },
-    { "title": "Underwater", "desc": "Terumbu karang dan ikan warna-warni.", "image": "/gotur/hero-1-2-image.jpg" },
-    { "title": "Peserta Trip", "desc": "Momen seru bareng peserta trip.", "image": "/gotur/about-2-1.jpg" },
-    { "title": "Kapal", "desc": "Kapal wisata siap berangkat.", "image": "/gotur/about-s-2-1.jpg" },
-    { "title": "Pulau & Pasir Putih", "desc": "Spot foto pasir putih yang estetik.", "image": "/gotur/destination-slider-1-2-268x391.jpg" },
-    { "title": "Sunset Vibes", "desc": "Golden hour di laut Manado.", "image": "/gotur/destination-slider-1-3-268x391.jpg" },
-    { "title": "Snorkeling Spot", "desc": "Air jernih & view bawah laut.", "image": "/gotur/blog-7-343x241.jpg" },
-    { "title": "Island Hopping", "desc": "Trip 3 pulau: Bunaken–Nain–Siladen.", "image": "/gotur/blog-9-343x241.jpg" },
-    { "title": "Resort Area", "desc": "Area dermaga dan resort.", "image": "/gotur/blog-5-343x241.jpg" }
+    {
+      "title": "Drone View",
+      "desc": "Foto drone perjalanan ke Bunaken.",
+      "image": "/gotur/hero-1-1-image.jpg"
+    },
+    {
+      "title": "Underwater",
+      "desc": "Terumbu karang dan ikan warna-warni.",
+      "image": "/gotur/hero-1-2-image.jpg"
+    },
+    {
+      "title": "Peserta Trip",
+      "desc": "Momen seru bareng peserta trip.",
+      "image": "/gotur/about-2-1.jpg"
+    },
+    {
+      "title": "Kapal",
+      "desc": "Kapal wisata siap berangkat.",
+      "image": "/gotur/about-s-2-1.jpg"
+    },
+    {
+      "title": "Pulau & Pasir Putih",
+      "desc": "Spot foto pasir putih yang estetik.",
+      "image": "/gotur/destination-slider-1-2-268x391.jpg"
+    },
+    {
+      "title": "Sunset Vibes",
+      "desc": "Golden hour di laut Manado.",
+      "image": "/gotur/destination-slider-1-3-268x391.jpg"
+    },
+    {
+      "title": "Snorkeling Spot",
+      "desc": "Air jernih & view bawah laut.",
+      "image": "/gotur/blog-7-343x241.jpg"
+    },
+    {
+      "title": "Island Hopping",
+      "desc": "Trip 3 pulau: Bunaken–Nain–Siladen.",
+      "image": "/gotur/blog-9-343x241.jpg"
+    },
+    {
+      "title": "Resort Area",
+      "desc": "Area dermaga dan resort.",
+      "image": "/gotur/blog-5-343x241.jpg"
+    }
   ],
   "itinerary": [
-    { "time": "08.00", "text": "Meeting point di Pelabuhan Manado" },
-    { "time": "08.30", "text": "Berangkat menuju Bunaken" },
-    { "time": "09.30", "text": "Tiba di Bunaken dan briefing singkat" },
-    { "time": "10.00", "text": "Snorkeling / diving / foto-foto" },
-    { "time": "12.00", "text": "Istirahat dan makan siang" },
-    { "time": "13.00", "text": "Island hopping / kunjungan spot wisata" },
-    { "time": "15.00", "text": "Perjalanan kembali ke Manado" },
-    { "time": "16.00", "text": "Trip selesai" }
+    {
+      "time": "08.00",
+      "text": "Meeting point di Pelabuhan Manado"
+    },
+    {
+      "time": "08.30",
+      "text": "Berangkat menuju Bunaken"
+    },
+    {
+      "time": "09.30",
+      "text": "Tiba di Bunaken dan briefing singkat"
+    },
+    {
+      "time": "10.00",
+      "text": "Snorkeling / diving / foto-foto"
+    },
+    {
+      "time": "12.00",
+      "text": "Istirahat dan makan siang"
+    },
+    {
+      "time": "13.00",
+      "text": "Island hopping / kunjungan spot wisata"
+    },
+    {
+      "time": "15.00",
+      "text": "Perjalanan kembali ke Manado"
+    },
+    {
+      "time": "16.00",
+      "text": "Trip selesai"
+    }
   ],
   "reasons": [
     "Berpengalaman melayani wisata Bunaken",
@@ -118,33 +221,70 @@
     "Cocok untuk wisatawan lokal, nasional, dan internasional"
   ],
   "testimonials": [
-    { "quote": "Trip-nya seru, guide ramah, pemandangan Bunaken luar biasa. Sangat recommended!", "by": "Customer Open Trip" },
-    { "quote": "Pelayanan bagus, dokumentasi keren, dan perjalanan sangat menyenangkan.", "by": "Customer Private Trip" },
-    { "quote": "Cocok untuk liburan keluarga dan rombongan kantor.", "by": "Customer Rombongan" }
+    {
+      "quote": "Trip-nya seru, guide ramah, pemandangan Bunaken luar biasa. Sangat recommended!",
+      "by": "Customer Open Trip"
+    },
+    {
+      "quote": "Pelayanan bagus, dokumentasi keren, dan perjalanan sangat menyenangkan.",
+      "by": "Customer Private Trip"
+    },
+    {
+      "quote": "Cocok untuk liburan keluarga dan rombongan kantor.",
+      "by": "Customer Rombongan"
+    }
   ],
   "faqs": [
     {
       "q": "Apakah bisa booking untuk rombongan?",
       "a": "Bisa. Balincah Trip melayani private trip, rombongan kantor, komunitas, keluarga, dan grup wisata."
     },
-    { "q": "Apakah tersedia alat snorkeling?", "a": "Ya, tersedia perlengkapan snorkeling sesuai paket yang dipilih." },
-    { "q": "Apakah bisa private trip?", "a": "Bisa. Jadwal dan rute dapat disesuaikan dengan kebutuhan peserta." },
-    { "q": "Apakah trip aman untuk pemula?", "a": "Ya. Peserta akan didampingi oleh guide lokal dan menggunakan perlengkapan keselamatan." },
+    {
+      "q": "Apakah tersedia alat snorkeling?",
+      "a": "Ya, tersedia perlengkapan snorkeling sesuai paket yang dipilih."
+    },
+    {
+      "q": "Apakah bisa private trip?",
+      "a": "Bisa. Jadwal dan rute dapat disesuaikan dengan kebutuhan peserta."
+    },
+    {
+      "q": "Apakah trip aman untuk pemula?",
+      "a": "Ya. Peserta akan didampingi oleh guide lokal dan menggunakan perlengkapan keselamatan."
+    },
     {
       "q": "Bagaimana cara booking?",
       "a": "Booking dapat dilakukan langsung melalui WhatsApp dengan mengisi nama, tanggal trip, jumlah peserta, dan jenis paket."
     }
-  ]
-  ,
+  ],
   "instagram": {
     "photos": [
-      { "image": "/gotur/hero-1-1-image.jpg", "caption": "Momen trip: view laut Bunaken", "postUrl": "" },
-      { "image": "/gotur/hero-1-2-image.jpg", "caption": "Underwater vibes", "postUrl": "" },
-      { "image": "/gotur/hero-1-3-image.jpg", "caption": "Island hopping vibes", "postUrl": "" },
-      { "image": "/gotur/about-2-1.jpg", "caption": "Spot foto & perjalanan", "postUrl": "" }
+      {
+        "image": "/gotur/hero-1-1-image.jpg",
+        "caption": "Momen trip: view laut Bunaken",
+        "postUrl": ""
+      },
+      {
+        "image": "/gotur/hero-1-2-image.jpg",
+        "caption": "Underwater vibes",
+        "postUrl": ""
+      },
+      {
+        "image": "/gotur/hero-1-3-image.jpg",
+        "caption": "Island hopping vibes",
+        "postUrl": ""
+      },
+      {
+        "image": "/gotur/about-2-1.jpg",
+        "caption": "Spot foto & perjalanan",
+        "postUrl": ""
+      }
     ],
     "videos": [
-      { "title": "Reels Trip (contoh)", "embedUrl": "https://www.instagram.com/reel/INVALID/embed", "postUrl": "" }
+      {
+        "title": "Reels Trip (contoh)",
+        "embedUrl": "https://www.instagram.com/reel/INVALID/embed",
+        "postUrl": ""
+      }
     ]
   }
 }

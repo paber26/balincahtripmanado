@@ -29,7 +29,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      contentUrl: "/content/content.json"
+      contentUrl: "/api/content"
     }
   }
 });

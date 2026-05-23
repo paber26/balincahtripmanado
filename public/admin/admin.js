@@ -1028,7 +1028,7 @@ function init() {
   // If localStorage is empty, try to fetch real content.json from the public directory
   const hasLocal = localStorage.getItem(STORAGE_KEY);
   if (!hasLocal) {
-    fetch("../content/content.json")
+    fetch("../api/content")
       .then((res) => {
         if (!res.ok) throw new Error("Status " + res.status);
         return res.json();
@@ -1042,7 +1042,7 @@ function init() {
         }
       })
       .catch((err) => {
-        console.warn("Could not auto-fetch ../content/content.json (expected if running via file:// protocol):", err);
+        console.warn("Could not auto-fetch ../api/content (expected if running via file:// protocol):", err);
       });
   }
   

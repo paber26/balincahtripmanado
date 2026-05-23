@@ -1,7 +1,7 @@
 const DEFAULT_WHATSAPP_NUMBER_E164 = "6281245474575";
 const DEFAULT_INSTAGRAM_HANDLE = "balincahtripmanado";
 const ADMIN_STORAGE_KEY = "balincah_admin_content_v1";
-const CONTENT_URL = "../content/content.json";
+const CONTENT_URL = "../api/content";
 
 function encodeWhatsAppMessage(message) {
   return encodeURIComponent(message.trim());

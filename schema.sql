@@ -1,0 +1,330 @@
+-- ==========================================
+-- Schema Setup for Supabase Integration
+-- Execute these statements in your Supabase SQL Editor.
+-- ==========================================
+
+-- 1. Create configurations table
+create table if not exists public.configurations (
+  id uuid default gen_random_uuid() primary key,
+  key text unique not null,
+  content jsonb not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- 2. Insert initial database content row
+insert into public.configurations (key, content)
+values (
+  'balincah_content',
+  '{
+    "siteName": "Balincah Trip Manado",
+    "tagline": "Explore Bunaken, Feel the Ocean Experience",
+    "whatsappE164": "6281245474575",
+    "instagramHandle": "balincahtripmanado",
+    "location": "Pantai Liang, Bunaken, Sulawesi Utara",
+    "heroTitle": "Explore Bunaken with Balincah Trip",
+    "heroSubtitle": "Open Trip, Private Trip, Snorkeling, Diving, dan Boat Charter Bunaken",
+    "aboutText": "Balincah Trip Manado adalah penyedia layanan wisata bahari di Manado yang berfokus pada perjalanan ke Bunaken, Nain Island, Siladen Island, dan destinasi laut terbaik di Sulawesi Utara.\n\nKami melayani open trip, private trip, boat charter, snorkeling, diving, serta perjalanan wisata rombongan dengan pelayanan yang nyaman, aman, dan menyenangkan.",
+    "packages": [
+      {
+        "name": "Open Trip Bunaken",
+        "desc": "Cocok untuk individu, pasangan, atau grup kecil yang ingin bergabung dalam trip bersama peserta lain.",
+        "type": "open_trip",
+        "location": "Bunaken, Manado",
+        "duration": "1 Day",
+        "priceFrom": 350000,
+        "rating": 4.9,
+        "featured": true,
+        "image": "/gotur/blog-1-343x241.jpg",
+        "facilities": [
+          "Kapal wisata",
+          "Guide lokal",
+          "Dokumentasi",
+          "Snorkeling",
+          "Kunjungan pulau",
+          "Life jacket"
+        ]
+      },
+      {
+        "name": "Private Trip Bunaken",
+        "desc": "Cocok untuk keluarga, kantor, komunitas, atau rombongan yang ingin perjalanan lebih fleksibel dan eksklusif.",
+        "type": "private_trip",
+        "location": "Bunaken, Manado",
+        "duration": "1 Day",
+        "priceFrom": 750000,
+        "rating": 4.9,
+        "featured": true,
+        "image": "/gotur/blog-4-343x241.jpg",
+        "facilities": [
+          "Kapal private",
+          "Jadwal fleksibel",
+          "Guide lokal",
+          "Spot foto terbaik",
+          "Snorkeling",
+          "Dokumentasi"
+        ]
+      },
+      {
+        "name": "Boat Charter Bunaken",
+        "desc": "Layanan sewa kapal untuk perjalanan wisata, rombongan, atau kebutuhan khusus.",
+        "type": "charter",
+        "location": "Manado",
+        "duration": "By Request",
+        "priceFrom": 1200000,
+        "rating": 4.8,
+        "featured": false,
+        "image": "/gotur/blog-5-343x241.jpg",
+        "facilities": [
+          "Kapal sesuai kapasitas",
+          "Rute sesuai kebutuhan",
+          "Waktu fleksibel",
+          "Cocok untuk rombongan"
+        ]
+      },
+      {
+        "name": "Snorkeling Trip",
+        "desc": "Pengalaman menikmati keindahan bawah laut Bunaken dengan ikan warna-warni dan terumbu karang.",
+        "type": "snorkeling",
+        "location": "Bunaken",
+        "duration": "Half Day",
+        "priceFrom": 300000,
+        "rating": 4.9,
+        "featured": false,
+        "image": "/gotur/blog-7-343x241.jpg",
+        "facilities": [
+          "Spot snorkeling pilihan",
+          "Peralatan snorkeling (sesuai paket)",
+          "Pendampingan guide"
+        ]
+      },
+      {
+        "name": "Diving Experience",
+        "desc": "Paket diving untuk menikmati pesona bawah laut Bunaken bersama instruktur profesional.",
+        "type": "diving",
+        "location": "Bunaken",
+        "duration": "Half Day",
+        "priceFrom": 650000,
+        "rating": 4.8,
+        "featured": false,
+        "image": "/gotur/blog-8-343x241.jpg",
+        "facilities": [
+          "Briefing & safety",
+          "Spot diving unggulan",
+          "Cocok untuk pemula & berpengalaman"
+        ]
+      },
+      {
+        "name": "Trip 3 Pulau (Bunaken - Nain - Siladen)",
+        "desc": "Rute wisata ke Bunaken, Nain Island, dan Siladen Island.",
+        "type": "island_hopping",
+        "location": "Bunaken • Nain • Siladen",
+        "duration": "1 Day",
+        "priceFrom": 500000,
+        "rating": 4.9,
+        "featured": true,
+        "image": "/gotur/blog-9-343x241.jpg",
+        "facilities": [
+          "Island hopping",
+          "Spot pasir putih",
+          "Dokumentasi momen"
+        ]
+      }
+    ],
+    "destinations": [
+      {
+        "name": "Bunaken Island",
+        "desc": "Ikon wisata bahari Sulawesi Utara dengan pemandangan laut dan terumbu karang."
+      },
+      {
+        "name": "Nain Island",
+        "desc": "Pulau cantik untuk island hopping, spot foto, dan suasana tenang."
+      },
+      {
+        "name": "Siladen Island",
+        "desc": "Pasir putih dan air jernih — cocok untuk santai setelah snorkeling/dive."
+      },
+      {
+        "name": "Underwater Bunaken",
+        "desc": "Spot underwater yang kaya biota laut—pengalaman visual yang sulit dilupakan."
+      }
+    ],
+    "gallery": [
+      {
+        "title": "Drone View",
+        "desc": "Foto drone perjalanan ke Bunaken.",
+        "image": "/gotur/hero-1-1-image.jpg"
+      },
+      {
+        "title": "Underwater",
+        "desc": "Terumbu karang dan ikan warna-warni.",
+        "image": "/gotur/hero-1-2-image.jpg"
+      },
+      {
+        "title": "Peserta Trip",
+        "desc": "Momen seru bareng peserta trip.",
+        "image": "/gotur/about-2-1.jpg"
+      },
+      {
+        "title": "Kapal",
+        "desc": "Kapal wisata siap berangkat.",
+        "image": "/gotur/about-s-2-1.jpg"
+      },
+      {
+        "title": "Pulau & Pasir Putih",
+        "desc": "Spot foto pasir putih yang estetik.",
+        "image": "/gotur/destination-slider-1-2-268x391.jpg"
+      },
+      {
+        "title": "Sunset Vibes",
+        "desc": "Golden hour di laut Manado.",
+        "image": "/gotur/destination-slider-1-3-268x391.jpg"
+      },
+      {
+        "title": "Snorkeling Spot",
+        "desc": "Air jernih & view bawah laut.",
+        "image": "/gotur/blog-7-343x241.jpg"
+      },
+      {
+        "title": "Island Hopping",
+        "desc": "Trip 3 pulau: Bunaken–Nain–Siladen.",
+        "image": "/gotur/blog-9-343x241.jpg"
+      },
+      {
+        "title": "Resort Area",
+        "desc": "Area dermaga dan resort.",
+        "image": "/gotur/blog-5-343x241.jpg"
+      }
+    ],
+    "itinerary": [
+      {
+        "time": "08.00",
+        "text": "Meeting point di Pelabuhan Manado"
+      },
+      {
+        "time": "08.30",
+        "text": "Berangkat menuju Bunaken"
+      },
+      {
+        "time": "09.30",
+        "text": "Tiba di Bunaken dan briefing singkat"
+      },
+      {
+        "time": "10.00",
+        "text": "Snorkeling / diving / foto-foto"
+      },
+      {
+        "time": "12.00",
+        "text": "Istirahat dan makan siang"
+      },
+      {
+        "time": "13.00",
+        "text": "Island hopping / kunjungan spot wisata"
+      },
+      {
+        "time": "15.00",
+        "text": "Perjalanan kembali ke Manado"
+      },
+      {
+        "time": "16.00",
+        "text": "Trip selesai"
+      }
+    ],
+    "reasons": [
+      "Berpengalaman melayani wisata Bunaken",
+      "Dokumentasi perjalanan menarik",
+      "Cocok untuk open trip dan private trip",
+      "Pelayanan ramah dan komunikatif",
+      "Pilihan paket fleksibel",
+      "Booking mudah via WhatsApp",
+      "Cocok untuk wisatawan lokal, nasional, dan internasional"
+    ],
+    "testimonials": [
+      {
+        "quote": "Trip-nya seru, guide ramah, pemandangan Bunaken luar biasa. Sangat recommended!",
+        "by": "Customer Open Trip"
+      },
+      {
+        "quote": "Pelayanan bagus, dokumentasi keren, dan perjalanan sangat menyenangkan.",
+        "by": "Customer Private Trip"
+      },
+      {
+        "quote": "Cocok untuk liburan keluarga dan rombongan kantor.",
+        "by": "Customer Rombongan"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Apakah bisa booking untuk rombongan?",
+        "a": "Bisa. Balincah Trip melayani private trip, rombongan kantor, komunitas, keluarga, dan grup wisata."
+      },
+      {
+        "q": "Apakah tersedia alat snorkeling?",
+        "a": "Ya, tersedia perlengkapan snorkeling sesuai paket yang dipilih."
+      },
+      {
+        "q": "Apakah bisa private trip?",
+        "a": "Bisa. Jadwal dan rute dapat disesuaikan dengan kebutuhan peserta."
+      },
+      {
+        "q": "Apakah trip aman untuk pemula?",
+        "a": "Ya. Peserta akan didampingi oleh guide lokal dan menggunakan perlengkapan keselamatan."
+      },
+      {
+        "q": "Bagaimana cara booking?",
+        "a": "Booking dapat dilakukan langsung melalui WhatsApp dengan mengisi nama, tanggal trip, jumlah peserta, dan jenis paket."
+      }
+    ],
+    "instagram": {
+      "photos": [
+        {
+          "image": "/gotur/hero-1-1-image.jpg",
+          "caption": "Momen trip: view laut Bunaken",
+          "postUrl": ""
+        },
+        {
+          "image": "/gotur/hero-1-2-image.jpg",
+          "caption": "Underwater vibes",
+          "postUrl": ""
+        },
+        {
+          "image": "/gotur/hero-1-3-image.jpg",
+          "caption": "Island hopping vibes",
+          "postUrl": ""
+        },
+        {
+          "image": "/gotur/about-2-1.jpg",
+          "caption": "Spot foto & perjalanan",
+          "postUrl": ""
+        }
+      ],
+      "videos": [
+        {
+          "title": "Reels Trip (contoh)",
+          "embedUrl": "https://www.instagram.com/reel/INVALID/embed",
+          "postUrl": ""
+        }
+      ]
+    }
+  }'
+)
+on conflict (key) do update
+set content = excluded.content;
+
+-- 3. Enable Row Level Security (RLS)
+alter table public.configurations enable row level security;
+
+-- 4. Create RLS select policy (allow anonymous read access)
+create policy "Allow public select configurations"
+on public.configurations
+for select
+using (true);
+
+-- 5. Create RLS write policy for authenticated or service role writes (bypassed if using service_role API key)
+create policy "Allow service_role write configurations"
+on public.configurations
+for all
+using (true)
+with check (true);
+
+-- 6. Storage Bucket Guide
+-- Manually create a public storage bucket in Supabase dashboard named "gallery"
+-- Ensure to enable public select policies for bucket objects to allow anonymous reads.
